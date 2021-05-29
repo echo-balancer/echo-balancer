@@ -78,11 +78,48 @@ def list_tweets():
     if prev_id:
         params["max_id"] = prev_id
 
+    user_id = request.args.get("user_id")
+    if user_id:
+        params["user_id"] = user_id
+
     resp = oauth.twitter.get(url, params=params)
     tweets = resp.json()
     print(str(tweets))
     return jsonify(tweets)
 
+@app.route("/api/followers")
+def list_followers():
+    url = "followers/list.json"
+    params = {"count": 200}
+    offset_id = request.args.get("offset")
+    if offset_id:
+        params["cursor"] = offset_id
+
+    user_id = request.args.get("user_id")
+    if user_id:
+        params["user_id"] = user_id
+
+    resp = oauth.twitter.get(url, params=params)
+    followers = resp.json()
+    print(str(followers))
+    return jsonify(followers)
+
+@app.route("/api/friends")
+def list_friends():
+    url = "friends/list.json"
+    params = {"count": 200}
+    offset_id = request.args.get("offset")
+    if offset_id:
+        params["cursor"] = offset_id
+
+    user_id = request.args.get("user_id")
+    if user_id:
+        params["user_id"] = user_id
+
+    resp = oauth.twitter.get(url, params=params)
+    friends = resp.json()
+    print(str(friends))
+    return jsonify(friends)
 
 if __name__ == "__main__":
     app.run(host="localhost", port=5000)
