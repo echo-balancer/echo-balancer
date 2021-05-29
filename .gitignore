@@ -12,7 +12,7 @@ instance/
 htmlcov/
 
 dist/
-build/
+# build/
 *.egg-info/
 
 ### React
@@ -26,7 +26,8 @@ build/
 /coverage
 
 # production
-/build
+# I am too lazy to write a buildpack :)
+#/build
 
 # misc
 .DS_Store
