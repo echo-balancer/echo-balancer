@@ -10,7 +10,7 @@ from flask import (
 )
 from authlib.integrations.flask_client import OAuth, OAuthError
 
-app = Flask(__name__, static_folder="client/build")
+app = Flask(__name__, static_folder="build")
 app.secret_key = "super secret"
 app.config.from_object("config")
 oauth = OAuth(app)
