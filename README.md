@@ -9,5 +9,5 @@ yarn
 yarn build
 
 # Run client app with server
-python app.py
+TWITTER_CLIENT_ID=<...> TWITTER_CLIENT_SECRET=<...> SECRET_KEY='!secret' python app.py
 ```
