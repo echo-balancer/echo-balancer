@@ -8,13 +8,13 @@ from flask import (
     request,
     jsonify,
 )
-from flask_cors import CORS
 from authlib.integrations.flask_client import OAuth, OAuthError
 
 app = Flask(__name__, static_folder="build")
 app.config.from_object("config")
 
 if app.env == "development":
+    from flask_cors import CORS
     CORS(app)
 
 oauth = OAuth(app)
