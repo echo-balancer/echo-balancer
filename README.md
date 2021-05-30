@@ -9,5 +9,9 @@ yarn
 yarn build
 
 # Run client app with server
-TWITTER_CLIENT_ID=<...> TWITTER_CLIENT_SECRET=<...> SECRET_KEY='!secret' FLASK_ENV=development flask run -h localhost
+TWITTER_CLIENT_ID=<...> TWITTER_CLIENT_SECRET=<...> SECRET_KEY='!secret' FLASK_ENV=development \
+flask run -h localhost
 ```
+
+In development mode (`yarn start`), login will redirect to server root.
+You can manually load http://localhost:3000 to visit development app.
