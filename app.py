@@ -2,20 +2,17 @@ import os
 from flask import (
     Flask,
     send_from_directory,
+    render_template,
     session,
     redirect,
     url_for,
     request,
     jsonify,
 )
-from authlib.integrations.flask_client import OAuth, OAuthError
+from authlib.integrations.flask_client import OAuth
 
-app = Flask(__name__, static_folder="build")
+app = Flask(__name__, static_folder="build", template_folder="build")
 app.config.from_object("config")
-
-if app.env == "development":
-    from flask_cors import CORS
-    CORS(app)
 
 oauth = OAuth(app)
 oauth.register(
@@ -28,10 +25,10 @@ oauth.register(
 )
 
 
-@app.errorhandler(OAuthError)
-def handle_error(error):
-    print(error)
-    return redirect("/?auth=error")
+# @app.errorhandler(OAuthError)
+# def handle_error(error):
+#     print(error)
+#     return redirect("/?auth=error")
 
 
 @app.route("/", defaults={"path": ""})
@@ -40,7 +37,7 @@ def serve(path):
     if path != "" and os.path.exists(app.static_folder + "/" + path):
         return send_from_directory(app.static_folder, path)
     else:
-        return send_from_directory(app.static_folder, "index.html")
+        return render_template("index.html", login=not not session.get("token", False))
 
 
 @app.route("/auth/login")
@@ -59,23 +56,21 @@ def authorize():
     session["token"] = token
     session["user"] = user
     print(str(session))
-    return redirect("/?auth=login")
+    return redirect("/")
 
 
 @app.route("/auth/logout")
 def logout():
     session.pop("token", None)
     session.pop("user", None)
-    return redirect("/?auth=logout")
-
-
-@app.route("/api/hello")
-def hello():
-    return "Hello, World!"
+    return redirect("/")
 
 
 @app.route("/api/tweets")
 def list_tweets():
+    if not session.get("token", False):
+        return jsonify({"message": "ERROR: Unauthorized"}), 401
+
     url = "statuses/user_timeline.json"
     params = {"include_rts": 1, "count": 200}
     prev_id = request.args.get("prev")
@@ -85,15 +80,17 @@ def list_tweets():
     user_id = request.args.get("user_id")
     if user_id:
         params["user_id"] = user_id
-
     resp = oauth.twitter.get(url, params=params)
     tweets = resp.json()
-    print(str(tweets))
+    # print(str(tweets))
     return jsonify(tweets)
 
 
 @app.route("/api/followers")
 def list_followers():
+    if not session.get("token", False):
+        return jsonify({"message": "ERROR: Unauthorized"}), 401
+
     url = "followers/list.json"
     params = {"count": 200}
     offset_id = request.args.get("offset")
@@ -112,6 +109,9 @@ def list_followers():
 
 @app.route("/api/friends")
 def list_friends():
+    if not session.get("token", False):
+        return jsonify({"message": "ERROR: Unauthorized"}), 401
+
     url = "friends/list.json"
     params = {"count": 200}
     offset_id = request.args.get("offset")

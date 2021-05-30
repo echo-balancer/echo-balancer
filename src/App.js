@@ -1,35 +1,50 @@
 import { useEffect, useState } from "react";
-
 import "./App.css";
 
 const HOST =
   process.env.NODE_ENV !== "production" ? "http://localhost:5000" : "";
 
 function App() {
-  const [data, setData] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [data, setData] = useState("Hello World");
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    () =>
+      process.env.NODE_ENV !== "production" ||
+      document.querySelector("meta[name=login]").content === "True"
+  );
 
   useEffect(() => {
-    (async () => {
-      let params = new URL(document.location).searchParams;
-      if (params.get("auth") === "login") {
-        setIsLoggedIn(true);
-        const tweetsResponse = await fetch(`${HOST}/api/tweets`);
-        const tweets = await tweetsResponse.json();
-        console.log(tweets);
-        setData(tweets)
-      } else {
-        const response = await fetch(`${HOST}/api/hello`);
-        setData(await response.text());
+    async function loadData() {
+      if (isLoggedIn) {
+        try {
+          const tweetsResponse = await fetch(`/api/tweets`, { credentials: 'include' });
+          if (tweetsResponse.status === 401) {
+            setIsLoggedIn(false);
+            setData("Hello World");
+            return;
+          }
+          const tweets = await tweetsResponse.json();
+          console.log(tweets);
+          setData(JSON.stringify(tweets, null, 2));
+        } catch (error) {
+          setData("API failed");
+          return;
+        }
       }
-    })();
-  }, [setData]);
+    }
+    loadData();
+  }, [isLoggedIn]);
 
   return (
     <div className="App">
-      <h1>{data}</h1>
-      <a href={`${HOST}/auth/login`}>Login</a>
-      <a href={`${HOST}/auth/logout`}>Logout</a>
+      <header>
+        <h1>Echo Chamber Meter</h1>
+        {isLoggedIn ? (
+          <a href={`${HOST}/auth/logout`}>Logout</a>
+        ) : (
+          <a href={`${HOST}/auth/login`}>Login</a>
+        )}
+      </header>
+      <pre>{data}</pre>
     </div>
   );
 }
