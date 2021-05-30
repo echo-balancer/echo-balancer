@@ -72,7 +72,7 @@ def list_tweets():
         return jsonify({"message": "ERROR: Unauthorized"}), 401
 
     url = "statuses/user_timeline.json"
-    params = {"include_rts": 1, "count": 200}
+    params = {"include_rts": 1, "count": request.args.get("limit", 20)}
     prev_id = request.args.get("prev")
     if prev_id:
         params["max_id"] = prev_id
