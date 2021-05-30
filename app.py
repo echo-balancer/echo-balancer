@@ -15,7 +15,7 @@ app.config.from_object("config")
 
 if app.env == "development":
     from flask_cors import CORS
-    CORS(app)
+    CORS(app, supports_credentials=True)
 
 oauth = OAuth(app)
 oauth.register(
@@ -51,7 +51,6 @@ def login():
 
 @app.route("/auth/logged_in")
 def logged_in():
-    print(str(session.get("token", False)))
     print(str(session))
     return jsonify({"logged_in": not not session.get("token", False)})
 

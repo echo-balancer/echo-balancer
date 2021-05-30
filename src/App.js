@@ -20,7 +20,7 @@ class App extends React.Component {
   }
 
   checkLoginStatus() {
-    axios.get(`${HOST}/auth/logged_in`, { withCredentials: true} )
+    axios.get(`${HOST}/auth/logged_in`, { withCredentials: true } )
       .then(response => {
         this.setState({
           isLoggedIn: response.data.logged_in
