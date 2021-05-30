@@ -49,6 +49,13 @@ def login():
     return oauth.twitter.authorize_redirect(redirect_uri)
 
 
+@app.route("/auth/logged_in")
+def logged_in():
+    print(str(session.get("token", False)))
+    print(str(session))
+    return jsonify({"logged_in": not not session.get("token", False)})
+
+
 @app.route("/auth/authorize")
 def authorize():
     token = oauth.twitter.authorize_access_token()

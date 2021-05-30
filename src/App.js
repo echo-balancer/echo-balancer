@@ -1,37 +1,68 @@
-import { useEffect, useState } from "react";
-
+import React from "react";
+import axios from "axios";
 import "./App.css";
 
 const HOST =
   process.env.NODE_ENV !== "production" ? "http://localhost:5000" : "";
 
-function App() {
-  const [data, setData] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+      isLoggedIn: false
+    };
+  }
 
-  useEffect(() => {
-    (async () => {
-      let params = new URL(document.location).searchParams;
-      if (params.get("auth") === "login") {
-        setIsLoggedIn(true);
-        const tweetsResponse = await fetch(`${HOST}/api/tweets`);
-        const tweets = await tweetsResponse.json();
-        console.log(tweets);
-        setData(tweets)
-      } else {
-        const response = await fetch(`${HOST}/api/hello`);
-        setData(await response.text());
-      }
-    })();
-  }, [setData]);
+  componentDidMount() {
+    this.checkLoginStatus();
+    this.loadData();
+  }
 
-  return (
-    <div className="App">
-      <h1>{data}</h1>
-      <a href={`${HOST}/auth/login`}>Login</a>
-      <a href={`${HOST}/auth/logout`}>Logout</a>
-    </div>
-  );
+  checkLoginStatus() {
+    axios.get(`${HOST}/auth/logged_in`, { withCredentials: true} )
+      .then(response => {
+        this.setState({
+          isLoggedIn: response.data.logged_in
+        })
+      })
+  }
+
+  async loadData() {
+    let params = new URL(document.location).searchParams;
+    if (params.get("auth") === "login") {
+      axios.get(`${HOST}/api/tweets`)
+        .then(response => {
+            console.log(response.data);
+            // this.setState({
+            //   data: response.data
+            // })
+        })
+    } else {
+      axios.get(`${HOST}/api/hello`)
+        .then(response => {
+            console.log(response.data);
+            this.setState({
+              data: response.data
+            })
+        })
+    }
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <h1>{this.state.data}</h1>
+        { this.state.isLoggedIn ?
+          <a href={`${HOST}/auth/logout`}>Logout</a>
+          :
+          <a href={`${HOST}/auth/login`}>
+            <img src="/sign-in-with-twitter-gray.png.twimg.2560.png" />
+          </a>
+        }
+      </div>
+    );
+  }
 }
 
 export default App;
