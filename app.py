@@ -8,11 +8,15 @@ from flask import (
     request,
     jsonify,
 )
+from flask_cors import CORS
 from authlib.integrations.flask_client import OAuth, OAuthError
 
 app = Flask(__name__, static_folder="build")
-app.secret_key = os.getenv('SECRET_KEY')
 app.config.from_object("config")
+
+if app.env == "development":
+    CORS(app)
+
 oauth = OAuth(app)
 oauth.register(
     name="twitter",
@@ -87,6 +91,7 @@ def list_tweets():
     print(str(tweets))
     return jsonify(tweets)
 
+
 @app.route("/api/followers")
 def list_followers():
     url = "followers/list.json"
@@ -103,6 +108,7 @@ def list_followers():
     followers = resp.json()
     print(str(followers))
     return jsonify(followers)
+
 
 @app.route("/api/friends")
 def list_friends():
@@ -121,5 +127,6 @@ def list_friends():
     print(str(friends))
     return jsonify(friends)
 
+
 if __name__ == "__main__":
-    app.run(host="localhost", port=5000)
+    app.run(host="localhost", port=5000, debug=True)
