@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 
 const HOST =
   process.env.NODE_ENV !== "production" ? "http://localhost:5000" : "";
