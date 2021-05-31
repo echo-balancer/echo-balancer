@@ -6,6 +6,7 @@ import {
   NavLink,
 } from 'react-router-dom';
 import { Tweets } from './Tweets';
+import { Report } from './Report';
 
 const HOST =
   process.env.NODE_ENV !== 'production' ? 'http://localhost:5000' : '';
@@ -30,7 +31,7 @@ function App() {
         </header>
 
         <nav className="bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center h-8">
+          <div className="max-w-7xl mx-auto px-4 lg:px-8 flex text-xs items-center justify-center h-8">
             <NavLink
               className="nav-link"
               to="/"
@@ -41,10 +42,17 @@ function App() {
             </NavLink>
             <NavLink
               className="nav-link"
-              to="/hashtags"
+              to="/report"
               activeClassName="border-indigo-300"
             >
-              Hashtags
+              Report
+            </NavLink>
+            <NavLink
+              className="nav-link"
+              to="/friends"
+              activeClassName="border-indigo-300"
+            >
+              Friends
             </NavLink>
             <NavLink
               className="nav-link"
@@ -61,34 +69,38 @@ function App() {
             {isLoggedIn ? (
               <Tweets isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
             ) : (
-              <a href={`${HOST}/auth/login`}>
-                <button type="button" className="btn">
-                  Login
-                </button>
-              </a>
+              <Login />
             )}
           </Route>
-          <Route path="/hashtags">
-            <h1>Hashtags Page</h1>
+          <Route path="/report">
+            <Report />
           </Route>
-          <Route path="/settings">
-            {isLoggedIn ? (
-              <a href={`${HOST}/auth/logout`}>
-                <button type="button" className="btn">
-                  Logout
-                </button>
-              </a>
-            ) : (
-              <a href={`${HOST}/auth/login`}>
-                <button type="button" className="btn">
-                  Login
-                </button>
-              </a>
-            )}
+          <Route path="/challenge">
+            <h1>Challenge friends</h1>
           </Route>
+          <Route path="/settings">{isLoggedIn ? <Logout /> : <Login />}</Route>
         </Switch>
       </div>
     </Router>
+  );
+}
+
+function Login() {
+  return (
+    <a href={`${HOST}/auth/login`}>
+      <button type="button" className="btn">
+        Login
+      </button>
+    </a>
+  );
+}
+function Logout() {
+  return (
+    <a href={`${HOST}/auth/logout`}>
+      <button type="button" className="btn">
+        Logout
+      </button>
+    </a>
   );
 }
 
