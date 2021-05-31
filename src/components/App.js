@@ -19,15 +19,42 @@ function App() {
 
   return (
     <Router>
-      <div className="container px-4 mx-auto sm:px-6 lg:px-8">
-        <header className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900">
+      <div className="">
+        <header className="text-center">
+          <h2 className="text-2xl font-extrabold text-gray-900">
             Echo Chamber Meter
           </h2>
-          <p className="mt-4 text-lg text-gray-500">
+          <p className="text-gray-500">
             How diversified is your social circle?
           </p>
         </header>
+
+        <nav className="bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center h-8">
+            <NavLink
+              className="nav-link"
+              to="/"
+              exact
+              activeClassName="border-indigo-300"
+            >
+              Home
+            </NavLink>
+            <NavLink
+              className="nav-link"
+              to="/hashtags"
+              activeClassName="border-indigo-300"
+            >
+              Hashtags
+            </NavLink>
+            <NavLink
+              className="nav-link"
+              to="/settings"
+              activeClassName="border-indigo-300"
+            >
+              Settings
+            </NavLink>
+          </div>
+        </nav>
 
         <Switch>
           <Route exact path="/">
@@ -60,29 +87,6 @@ function App() {
             )}
           </Route>
         </Switch>
-
-        <div className="max-w-3xl fixed bottom-0 left-0 right-0 z-0 bg-indigo-600 border-t border-gray-200 px-4 flex items-center justify-between sm:px-0">
-          <nav
-            className="max-w-3xl relative mx-auto flex justify-between space-x-4 text-white"
-            aria-label="Navbar"
-          >
-            <div>
-              <NavLink to="/" activeClassName="bg-indigo-300">
-                Home
-              </NavLink>
-            </div>
-            <div>
-              <NavLink to="/hashtags" activeClassName="bg-indigo-300">
-                Hashtags
-              </NavLink>
-            </div>
-            <div>
-              <NavLink to="/settings" activeClassName="bg-indigo-300">
-                Settings
-              </NavLink>
-            </div>
-          </nav>
-        </div>
       </div>
     </Router>
   );
