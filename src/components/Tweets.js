@@ -1,4 +1,32 @@
-export function Tweets({ data }) {
+import { useEffect, useState } from 'react';
+
+export function Tweets({ isLoggedIn, setIsLoggedIn }) {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    async function loadData() {
+      if (isLoggedIn) {
+        try {
+          const tweetsResponse = await fetch(`/api/tweets?limit=10`, {
+            credentials: 'include',
+          });
+          if (tweetsResponse.status === 401) {
+            setIsLoggedIn(false);
+            setData([]);
+            return;
+          }
+          const tweets = await tweetsResponse.json();
+          console.log(tweets);
+          setData(tweets);
+        } catch (error) {
+          setData([]);
+          return;
+        }
+      }
+    }
+    loadData();
+  }, [isLoggedIn]);
+
   return (
     <ul className="overflow-auto divide-y divide-gray-200">
       {data.map((tweet) => (
