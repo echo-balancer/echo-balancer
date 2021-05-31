@@ -11,36 +11,11 @@ const HOST =
   process.env.NODE_ENV !== 'production' ? 'http://localhost:5000' : '';
 
 function App() {
-  const [data, setData] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(
     () =>
       process.env.NODE_ENV !== 'production' ||
       document.querySelector('meta[name=login]').content === 'True'
   );
-
-  useEffect(() => {
-    async function loadData() {
-      if (isLoggedIn) {
-        try {
-          const tweetsResponse = await fetch(`/api/tweets?limit=10`, {
-            credentials: 'include',
-          });
-          if (tweetsResponse.status === 401) {
-            setIsLoggedIn(false);
-            setData([]);
-            return;
-          }
-          const tweets = await tweetsResponse.json();
-          console.log(tweets);
-          setData(tweets);
-        } catch (error) {
-          setData([]);
-          return;
-        }
-      }
-    }
-    loadData();
-  }, [isLoggedIn]);
 
   return (
     <Router>
@@ -57,7 +32,7 @@ function App() {
         <Switch>
           <Route exact path="/">
             {isLoggedIn ? (
-              <Tweets data={data} />
+              <Tweets isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
             ) : (
               <a href={`${HOST}/auth/login`}>
                 <button type="button" className="btn">
