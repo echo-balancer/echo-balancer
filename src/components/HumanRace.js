@@ -7,10 +7,10 @@ import { ReactComponent as WhiteFigure } from './figures/white.svg';
 const map = {
   All: OtherFigure,
   AAPI: AAPIFigure,
-  black: BlackFigure,
-  latino: LatinoFigure,
-  other: OtherFigure,
-  white: WhiteFigure,
+  Black: BlackFigure,
+  Latino: LatinoFigure,
+  Other: OtherFigure,
+  White: WhiteFigure,
 };
 
 export function HumanRace({ race }) {
