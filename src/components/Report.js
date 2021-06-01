@@ -29,7 +29,7 @@ export function Report() {
         Your following's diversity distribution
       </h2>
       <nav
-        className="relative my-2 z-0 flex space-x-1"
+        className="relative z-0 flex my-2 space-x-1"
         aria-labelledby="diversity-report-navigation"
         aria-label="Divesity report tabs"
       >
@@ -65,12 +65,12 @@ export function Report() {
 
 function RaceReport() {
   const data = {
-    all: 912,
-    black: 27,
-    aapi: 64,
-    latino: 109,
-    white: 693,
-    other: 19,
+    All: 912,
+    Black: 27,
+    AAPI: 64,
+    Latino: 109,
+    White: 693,
+    Other: 19,
   };
   let { raceId } = useParams();
   const race = tabs.find((t) => t.to.includes(raceId))?.name ?? 'All';
@@ -79,7 +79,7 @@ function RaceReport() {
     <div>
       <p className="text-xs font-semibold">
         You are following{' '}
-        <span className="text-base font-bold">{data.all}</span> accounts, among
+        <span className="text-base font-bold">{data.All}</span> accounts, among
         which:
       </p>
       <HumanRace race={race} />
