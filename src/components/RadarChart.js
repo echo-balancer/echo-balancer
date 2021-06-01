@@ -1,6 +1,25 @@
+import { useEffect, useState } from 'react'
 import { Radar } from "react-chartjs-2";
+import { CompareFriends } from "./CompareFriends";
 
 function RadarChart() {
+
+  const myData = {
+    label: 'Your network diversity',
+    data: [65, 59, 90, 81, 56],
+    fill: true,
+    backgroundColor: 'rgba(130, 232, 249, 0.4)',
+    borderColor: 'rgba(130, 232, 249)',
+    pointBackgroundColor: 'rgba(130, 232, 249)',
+    pointBorderColor: '#fff',
+    pointHoverBackgroundColor: '#fff',
+    pointHoverBorderColor: 'rgba(130, 232, 249)',
+    pointStyle: 'circle'
+  }
+
+  const [compareData, setCompareData] = useState();
+  const [dataSet, setDataset] = useState([myData]);
+
   const data = {
     labels: [
       'Black',
@@ -9,29 +28,7 @@ function RadarChart() {
       'Unknown',
       'AAPI',
     ],
-    datasets: [{
-      label: 'Your network diversity',
-      data: [65, 59, 90, 81, 56],
-      fill: true,
-      backgroundColor: 'rgba(130, 232, 249, 0.4)',
-      borderColor: 'rgba(130, 232, 249)',
-      pointBackgroundColor: 'rgba(130, 232, 249)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(130, 232, 249)',
-      pointStyle: 'circle'
-    }, {
-      label: "Alex Wong's network diversity",
-      data: [28, 48, 40, 19, 96],
-      fill: true,
-      backgroundColor: 'rgba(165, 180, 252, 0.4)',
-      borderColor: 'rgba(165, 180, 252)',
-      pointBackgroundColor: 'rgba(165, 180, 252)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(165, 180, 252)',
-      pointStyle: 'circle'
-    }]
+    datasets: dataSet,
   }
 
   const options = {
@@ -46,9 +43,16 @@ function RadarChart() {
     }
   }
 
+  useEffect(() => {
+    if(compareData) {
+      setDataset([myData, compareData]);
+    }
+  }, [compareData]);
+
   return (
     <>
       <Radar data={data} options={options}/>
+      <CompareFriends compareData={compareData} setCompareData={setCompareData} />
     </>
   );
 }
