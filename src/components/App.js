@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import { Tweets } from './Tweets';
 import { Report } from './Report';
+import RadarChart from './RadarChart';
 
 const HOST =
   process.env.NODE_ENV !== 'production' ? 'http://localhost:5000' : '';
@@ -75,8 +76,8 @@ function App() {
           <Route path="/report">
             <Report />
           </Route>
-          <Route path="/challenge">
-            <h1>Challenge friends</h1>
+          <Route path="/friends">
+            <RadarChart />
           </Route>
           <Route path="/settings">{isLoggedIn ? <Logout /> : <Login />}</Route>
         </Switch>
