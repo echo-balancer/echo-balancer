@@ -15,7 +15,6 @@ export function CompareFriends({ compareData, setCompareData }) {
         });
         if (friendsResponse.status === 200) {
           const friends = await friendsResponse.json();
-          console.log(friends["users"]);
           setFriends(friends["users"] || []);
         }
       } catch (error) {
@@ -103,7 +102,7 @@ export function CompareFriends({ compareData, setCompareData }) {
                         </button>
                       </div>
                     </div>
-                    <FriendsList friends={friends} setSelectedUser={setSelectedUser} />
+                    <FriendsList friends={friends} selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
                   </div>
                 </div>
               </Transition.Child>
