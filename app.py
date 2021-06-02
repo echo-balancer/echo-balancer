@@ -73,26 +73,6 @@ def users():
     return jsonify(session.get("user"))
 
 
-@app.route("/api/tweets")
-def list_tweets():
-    if not session.get("token", False):
-        return jsonify({"message": "ERROR: Unauthorized"}), 401
-
-    url = "statuses/user_timeline.json"
-    params = {"include_rts": 1, "count": request.args.get("limit", 20)}
-    prev_id = request.args.get("prev")
-    if prev_id:
-        params["max_id"] = prev_id
-
-    user_id = request.args.get("user_id")
-    if user_id:
-        params["user_id"] = user_id
-    resp = oauth.twitter.get(url, params=params)
-    tweets = resp.json()
-    # print(str(tweets))
-    return jsonify(tweets)
-
-
 @app.route("/api/followers")
 def list_followers():
     if not session.get("token", False):
