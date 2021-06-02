@@ -66,6 +66,13 @@ def logout():
     return redirect("/")
 
 
+@app.route("/api/me")
+def users():
+    if not session.get("user", False):
+        return jsonify({"message": "ERROR: Unauthorized"}), 401
+    return jsonify(session.get("user"))
+
+
 @app.route("/api/tweets")
 def list_tweets():
     if not session.get("token", False):
