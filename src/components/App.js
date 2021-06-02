@@ -1,14 +1,13 @@
 import { Fragment, useEffect, useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
-import { MenuAlt1Icon } from '@heroicons/react/outline'
-
+import { MenuAlt1Icon } from '@heroicons/react/outline';
 import {
   BrowserRouter as Router,
   Switch,
+  Redirect,
   Route,
   NavLink,
 } from 'react-router-dom';
-// import { Tweets } from './Tweets';
 import { Report } from './Report';
 import RadarChart from './RadarChart';
 import { ReactComponent as LoginButton } from './figures/login_button.svg';
@@ -27,18 +26,16 @@ function App() {
   return (
     <Router>
       <div className="">
-        {isLoggedIn && <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}
+        {isLoggedIn && (
+          <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+        )}
 
         <Switch>
           <Route exact path="/">
-            {isLoggedIn ? (
-              // <Tweets isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-              <Report />
-            ) : (
-              <Landing />
-            )}
+            {isLoggedIn ? <Redirect to="/report" /> : <Landing />}
           </Route>
           <Route path="/report">
+            <Report />
           </Route>
           <Route path="/friends">
             <RadarChart />
@@ -54,7 +51,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
   const [user, setUser] = useState();
 
   function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
+    return classes.filter(Boolean).join(' ');
   }
 
   useEffect(() => {
@@ -112,7 +109,9 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
                               <button
                                 type="submit"
                                 className={classNames(
-                                  active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                  active
+                                    ? 'bg-gray-100 text-gray-900'
+                                    : 'text-gray-700',
                                   'block w-full text-left px-4 py-2 text-sm'
                                 )}
                               >
@@ -134,9 +133,15 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
           </div>
 
           <div className="flex items-center space-x-4 lg:space-x-6">
-            <img className="mt-4 ml-4 w-16 h-16 rounded-full lg:w-20 lg:h-20" src={user && user.profile_image_url_https} alt="" />
+            <img
+              className="mt-4 ml-4 w-16 h-16 rounded-full lg:w-20 lg:h-20"
+              src={user && user.profile_image_url_https}
+              alt=""
+            />
             <div className="mt-4 font-medium text-lg leading-4">
-              <h3 className="text-2xl text-left font-semibold text-gray-900">Hello, {user && user.name}!</h3>
+              <h3 className="text-2xl text-left font-semibold text-gray-900">
+                Hello, {user && user.name}!
+              </h3>
               <p className="text-xs text-left font-normal text-gray-500">
                 Welcome! Let's explore your network diversity
               </p>
@@ -169,20 +174,26 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
 
 function Landing() {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8" style={{ background: "linear-gradient(180deg, #A5B4FC 0%, rgba(238, 242, 255, 0) 100%)" }}>
+    <div
+      className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8"
+      style={{
+        background:
+          'linear-gradient(180deg, #A5B4FC 0%, rgba(238, 242, 255, 0) 100%)',
+      }}
+    >
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <Icon
-          className="mx-auto h-12 w-auto"
-        />
+        <Icon className="mx-auto h-12 w-auto" />
         <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
           Welcome to Echo Balancer
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Find out your Twitter influencers’ diversity*, compare to others from the community, and share your results.
+          Find out your Twitter influencers’ diversity*, compare to others from
+          the community, and share your results.
         </p>
 
         <p className="mt-8 text-center text-sm text-gray-500">
-          *Echo Balancer only shows results when you have more than 100 following accounts on Twitter.
+          *Echo Balancer only shows results when you have more than 100
+          following accounts on Twitter.
         </p>
       </div>
 
@@ -193,7 +204,8 @@ function Landing() {
           </a>
         </div>
         <p className="mt-6 px-4 text-sm text-gray-500">
-          Disclaimer: Your private data are safe with us as we do not store any of your data as soon as you close this page.
+          Disclaimer: Your private data are safe with us as we do not store any
+          of your data as soon as you close this page.
         </p>
       </div>
     </div>
