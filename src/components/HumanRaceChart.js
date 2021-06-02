@@ -27,7 +27,7 @@ export function HumanRaceChart({ races, data }) {
   );
   return (
     <div>
-      <div className="flex justify-start">
+      <div className="flex justify-start my-2">
         {stats.slice(0, -1).map(({ race, percentage }) => (
           <FigureWithDescription race={race} percentage={percentage} />
         ))}
