@@ -22,27 +22,16 @@ function App() {
       process.env.NODE_ENV !== 'production' ||
       document.querySelector('meta[name=login]').content === 'True'
   );
-  const [friends, setFriends] = useState([]);
-
-  useEffect(() => {
-    async function loadFriends() {
-      try {
-        if (isLoggedIn) {
-          const friendsResponse = await fetch(`/api/friends`, {
-            credentials: 'include',
-          });
-          if (friendsResponse.status === 200) {
-            const friends = await friendsResponse.json();
-            setFriends(friends["users"] || []);
-          }
-        }
-      } catch (error) {
-        setFriends([]);
-        return;
-      }
-    }
-    loadFriends();
-  }, []);
+  function PrivateRoute({ children, ...rest }) {
+    return (
+      <Route
+        {...rest}
+        render={() => {
+          return isLoggedIn === true ? children : <Redirect to="/" />;
+        }}
+      />
+    );
+  }
 
   return (
     <Router>
@@ -55,12 +44,12 @@ function App() {
           <Route exact path="/">
             {isLoggedIn ? <Redirect to="/report" /> : <Landing />}
           </Route>
-          <Route path="/report">
+          <PrivateRoute path="/report">
             <Report />
-          </Route>
-          <Route path="/friends">
-            <RadarChart friends={friends}/>
-          </Route>
+          </PrivateRoute>
+          <PrivateRoute path="/friends">
+            <RadarChart />
+          </PrivateRoute>
           <Route path="/settings">{isLoggedIn && <Logout />}</Route>
         </Switch>
       </div>
@@ -209,7 +198,10 @@ function Landing() {
           Echo Balancer
         </h2>
 
-        <p className="mt-8 mx-auto text-center text-sm leading-4 font-medium" style={{maxWidth: "250px"}}>
+        <p
+          className="mt-8 mx-auto text-center text-sm leading-4 font-medium"
+          style={{ maxWidth: '250px' }}
+        >
           "We need diversity if we are to change, grow, and innovate”
         </p>
 
@@ -217,9 +209,12 @@ function Landing() {
           -- Dr. Katherine W. Phillips
         </p>
 
-        <p className="mt-12 mx-auto text-center text-sm font-normal leading-6 text-gray-700" style={{maxWidth: "327px"}}>
-          We believe that informational diversity 
-          fuels innovation. Find out how diverse your current Twitter following is! 
+        <p
+          className="mt-12 mx-auto text-center text-sm font-normal leading-6 text-gray-700"
+          style={{ maxWidth: '327px' }}
+        >
+          We believe that informational diversity fuels innovation. Find out how
+          diverse your current Twitter following is!
         </p>
       </div>
 
@@ -230,7 +225,8 @@ function Landing() {
           </a>
         </div>
         <p className="px-4 text-sm text-gray-500">
-          *Disclaimer: Your private data are safe with us as we do not store any of your data as soon as you close this page.
+          *Disclaimer: Your private data are safe with us as we do not store any
+          of your data as soon as you close this page.
         </p>
       </div>
     </div>

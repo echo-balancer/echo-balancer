@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 import { Radar } from "react-chartjs-2";
 import { CompareFriends } from "./CompareFriends";
 
-function RadarChart({ friends }) {
-
+function RadarChart() {
   const myData = {
     label: 'Your network diversity',
     data: [4, 2.3, 3, 2.1, 1.5],
@@ -67,7 +66,7 @@ function RadarChart({ friends }) {
   return (
     <>
       <Radar data={data} options={options}/>
-      <CompareFriends friends={friends} compareData={compareData} setCompareData={setCompareData} />
+      <CompareFriends compareData={compareData} setCompareData={setCompareData} />
     </>
   );
 }
