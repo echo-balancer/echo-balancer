@@ -22,6 +22,7 @@ function App() {
       process.env.NODE_ENV !== 'production' ||
       document.querySelector('meta[name=login]').content === 'True'
   );
+
   function PrivateRoute({ children, ...rest }) {
     return (
       <Route
@@ -32,6 +33,46 @@ function App() {
       />
     );
   }
+
+  const [diversityData, setDiversityData] = useState(null);
+  const [friends, setFriends] = useState([]);
+
+  // TODO: support toggle to influencer mode
+  async function loadDiversityData() {
+    try {
+      if (isLoggedIn) {
+        const resp = await fetch(`/api/diversity`, {
+          credentials: 'include',
+        });
+        if (resp.status === 200) {
+          const data = await resp.json();
+          setDiversityData(data);
+        }
+      }
+    } catch (error) {
+      setDiversityData(null);
+    }
+  }
+  async function loadFriends() {
+    try {
+      if (isLoggedIn) {
+        const friendsResponse = await fetch(`/api/friends`, {
+          credentials: 'include',
+        });
+        if (friendsResponse.status === 200) {
+          const friends = await friendsResponse.json();
+          setFriends(friends['users'] || []);
+        }
+      }
+    } catch (error) {
+      setFriends([]);
+      return;
+    }
+  }
+  useEffect(() => {
+    loadDiversityData();
+    loadFriends();
+  }, []);
 
   return (
     <Router>
@@ -45,10 +86,10 @@ function App() {
             {isLoggedIn ? <Redirect to="/report" /> : <Landing />}
           </Route>
           <PrivateRoute path="/report">
-            <Report />
+            <Report diversityData={diversityData} />
           </PrivateRoute>
           <PrivateRoute path="/friends">
-            <RadarChart />
+            <RadarChart friends={friends} />
           </PrivateRoute>
           <Route path="/settings">{isLoggedIn && <Logout />}</Route>
         </Switch>

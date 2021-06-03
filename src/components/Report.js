@@ -20,7 +20,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export function Report() {
+export function Report({ diversityData }) {
   let { path, url } = useRouteMatch();
 
   return (
@@ -53,10 +53,10 @@ export function Report() {
 
       <Switch>
         <Route exact path={path}>
-          <RaceReport />
+          <RaceReport diversityData={diversityData} />
         </Route>
         <Route exact path={`${path}/:raceId`}>
-          <RaceReport />
+          <RaceReport diversityData={diversityData} />
         </Route>
       </Switch>
 
@@ -68,30 +68,24 @@ export function Report() {
   );
 }
 
-function RaceReport() {
-  // TODO: support toggle to influencer mode
-  const apiData = {
-    influencer_other: 3,
-    influencer_pctapi: 15,
-    influencer_pctblack: 12,
-    influencer_pcthispanic: 5,
-    influencer_pctwhite: 65,
-    influencer_total_count: 109,
-    other: 3,
-    pctapi: 19,
-    pctblack: 12,
-    pcthispanic: 5,
-    pctwhite: 61,
-    total_count: 129,
-  };
-  const data = {
-    total: apiData.total_count,
-    Black: apiData.pctblack,
-    AAPI: apiData.pctapi,
-    Latino: apiData.pcthispanic,
-    White: apiData.pctwhite,
-    Other: apiData.other,
-  };
+function RaceReport({ diversityData }) {
+  const data = diversityData
+    ? {
+        total: diversityData.total_count,
+        Black: diversityData.pctblack,
+        AAPI: diversityData.pctapi,
+        Latino: diversityData.pcthispanic,
+        White: diversityData.pctwhite,
+        Other: diversityData.other,
+      }
+    : {
+        total: 0,
+        Black: 0,
+        AAPI: 0,
+        Latino: 0,
+        White: 0,
+        Other: 0,
+      };
   let { raceId } = useParams();
   const race = tabs.find((t) => t.to.includes(raceId))?.name;
   let races;
