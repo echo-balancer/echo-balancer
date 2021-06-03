@@ -21,7 +21,7 @@ app = Flask(__name__, static_folder="build", template_folder="build")
 app.config.from_object("config")
 
 model = keras.models.load_model("./race_prediction/race_predictor_mvp")
-encoder = pickle.load(open('./race_prediction/encoder.pkl', 'rb'))
+encoder = pickle.load(open("./race_prediction/encoder.pkl", "rb"))
 
 oauth = OAuth(app)
 oauth.register(
@@ -64,7 +64,7 @@ def authorize():
     # TODO: Save to DB
     session["token"] = token
     session["user"] = user
-    print(str(session))
+    # print(str(session))
     return redirect("/")
 
 
@@ -99,7 +99,7 @@ def list_followers():
 
     resp = oauth.twitter.get(url, params=params)
     followers = resp.json()
-    print(str(followers))
+    # print(str(followers))
     return jsonify(followers)
 
 
@@ -120,7 +120,7 @@ def list_friends():
 
     resp = oauth.twitter.get(url, params=params)
     friends = resp.json()
-    print(str(friends))
+    # print(str(friends))
     return jsonify(friends)
 
 
