@@ -130,7 +130,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
     <>
       <header className="text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex justify-between items-center py-4 md:justify-start md:space-x-10">
+          <div className="flex justify-between items-center pt-4 md:justify-start md:space-x-10">
             <Menu as="div" className="relative inline-block text-left">
               {({ open }) => (
                 <>

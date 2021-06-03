@@ -29,7 +29,7 @@ export function Report({ diversityData }) {
   ) : (
     <div className="mx-8 mt-2">
       <h2 id="diversity-report-navigation" className="font-bold text-gray-800">
-        Your following's diversity distribution
+        Your influencer's diversity report
       </h2>
       <nav
         className="relative z-0 flex my-2 space-x-1"
