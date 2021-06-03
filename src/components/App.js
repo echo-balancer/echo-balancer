@@ -12,6 +12,7 @@ import { Report } from './Report';
 import RadarChart from './RadarChart';
 import { ReactComponent as LoginButton } from './figures/login_button.svg';
 import { ReactComponent as Icon } from './figures/icon1.svg';
+import quote from './figures/quote.png';
 
 const HOST =
   process.env.NODE_ENV !== 'production' ? 'http://localhost:5000' : '';
@@ -239,11 +240,13 @@ function Landing() {
           Echo Balancer
         </h2>
 
+        <img className="mt-6 mx-auto" src={quote} alt="quote" />
+
         <p
-          className="mt-8 mx-auto text-center text-sm leading-4 font-medium"
+          className="mx-auto text-center text-sm leading-4 font-medium"
           style={{ maxWidth: '250px' }}
         >
-          "We need diversity if we are to change, grow, and innovate”
+          We need diversity if we are to change, grow, and innovate”
         </p>
 
         <p className="mt-2 text-center text-sm font-medium">
@@ -259,16 +262,16 @@ function Landing() {
         </p>
       </div>
 
-      <div className="mt-12 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="py-4 px-4 sm:px-10">
           <a href={`${HOST}/auth/login`}>
-            <LoginButton />
+            <LoginButton className="mx-auto"/>
           </a>
+          <p className="ml-6 text-sm text-gray-500">
+            *Disclaimer: Your private data are safe with us as we do not store any
+            of your data as soon as you close this page.
+          </p>
         </div>
-        <p className="px-4 text-sm text-gray-500">
-          *Disclaimer: Your private data are safe with us as we do not store any
-          of your data as soon as you close this page.
-        </p>
       </div>
     </div>
   );
