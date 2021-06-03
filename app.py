@@ -24,7 +24,6 @@ model = keras.models.load_model("./race_prediction/race_predictor_mvp")
 encoder = pickle.load(open("./race_prediction/encoder.pkl", "rb"))
 MAX_PAGES = 3
 
-
 oauth = OAuth(app)
 oauth.register(
     name="twitter",
@@ -105,8 +104,29 @@ def list_followers():
     return jsonify(followers)
 
 
-@app.route("/api/friends/<offset_id>")
-def list_friends(offset_id=None):
+@app.route("/api/friends")
+def list_friends():
+    if not session.get("token", False):
+        return jsonify({"message": "ERROR: Unauthorized"}), 401
+
+    url = "friends/list.json"
+    params = {"count": 200}
+    offset_id = request.args.get("offset")
+    if offset_id:
+        params["cursor"] = offset_id
+
+    user_id = request.args.get("user_id")
+    if user_id:
+        params["user_id"] = user_id
+
+    resp = oauth.twitter.get(url, params=params)
+    friends = resp.json()
+    # print(str(friends))
+    return jsonify(friends)
+
+
+@app.route("/api/get_follows/<offset_id>")
+def get_follows(offset_id=None):
     if not session.get("token", False):
         return jsonify({"message": "ERROR: Unauthorized"}), 401
 
@@ -122,7 +142,6 @@ def list_friends(offset_id=None):
 
     resp = oauth.twitter.get(url, params=params)
     friends = resp.json()
-    # print(str(friends))
     return friends
 
 
@@ -135,7 +154,7 @@ def diversity():
     offset = None
     for i in range(MAX_PAGES):
         if i == 0 or offset:
-            response = list_friends(offset)
+            response = get_follows(offset)
             data.extend(response['users'])
             offset = response.get('next_cursor')
 
