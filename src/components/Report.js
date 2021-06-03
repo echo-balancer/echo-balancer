@@ -59,18 +59,38 @@ export function Report() {
           <RaceReport />
         </Route>
       </Switch>
+
+      <p className="text-gray-800 text-sm my-2 py-3">
+        We believe that informational diversity fuels innovation, scroll down to
+        discover a variety of diverse influencers to follow!
+      </p>
     </div>
   );
 }
 
 function RaceReport() {
+  // TODO: support toggle to influencer mode
+  const apiData = {
+    influencer_other: 3,
+    influencer_pctapi: 15,
+    influencer_pctblack: 12,
+    influencer_pcthispanic: 5,
+    influencer_pctwhite: 65,
+    influencer_total_count: 109,
+    other: 3,
+    pctapi: 19,
+    pctblack: 12,
+    pcthispanic: 5,
+    pctwhite: 61,
+    total_count: 129,
+  };
   const data = {
-    total: 912,
-    Black: 3,
-    AAPI: 7,
-    Latino: 12,
-    White: 76,
-    Other: 2,
+    total: apiData.total_count,
+    Black: apiData.pctblack,
+    AAPI: apiData.pctapi,
+    Latino: apiData.pcthispanic,
+    White: apiData.pctwhite,
+    Other: apiData.other,
   };
   let { raceId } = useParams();
   const race = tabs.find((t) => t.to.includes(raceId))?.name;
@@ -84,9 +104,8 @@ function RaceReport() {
   return (
     <div>
       <p className="text-xs font-semibold">
-        You are following{' '}
-        <span className="text-base font-bold">{data.total}</span> accounts,
-        among which:
+        Based on <span className="text-base font-bold">{data.total}</span> of
+        your following accounts:
       </p>
       <HumanRaceChart races={races} data={data} />
     </div>
