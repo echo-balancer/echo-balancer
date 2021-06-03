@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Radar } from "react-chartjs-2";
 import { CompareFriends } from "./CompareFriends";
+import { LoadingSpin } from "./LoadingSpin";
 
 function RadarChart({ diversityData, friends }) {
   const [friendLabel, setFriendLabel] = useState();
@@ -90,7 +91,10 @@ function RadarChart({ diversityData, friends }) {
     }
   }, [friendLabel, friendDiversityData]);
 
-  return (
+  return diversityData === null ||
+    (friendLabel && friendDiversityData === null) ? (
+    <LoadingSpin />
+  ) : (
     <>
       <Radar data={data} options={options} />
       <CompareFriends

@@ -12,6 +12,7 @@ export function CompareFriends({
 
   function handleConfirm() {
     setFriendLabel(`${selectedUser.name}'s network diversity`);
+    setFriendDiversityData(null);
     loadDiversityData(selectedUser.id);
     setOpen(false);
   }
