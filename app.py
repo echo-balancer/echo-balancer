@@ -126,6 +126,9 @@ def list_friends():
 
 @app.route("/api/diversity")
 def diversity():
+    if not session.get("token", False):
+        return jsonify({"message": "ERROR: Unauthorized"}), 401
+
     # TODO: may need more work around pagination
     url = "friends/list.json"
     params = {"count": 200}
