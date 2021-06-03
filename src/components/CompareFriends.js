@@ -74,27 +74,27 @@ export function CompareFriends({
               <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
                 <div>
                   <div className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">
-                    <div className="-ml-4 -mt-2 flex items-cente sm:flex-nowrap">
+                    <div className="-ml-4 -mt-2 flex items-center sm:flex-nowrap">
                       <button
                         type="button"
-                        className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="mr-auto rounded-md shadow-sm text-ml font-medium text-gray-600 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         onClick={() => setOpen(false)}
                       >
                         Cancel
                       </button>
 
-                      <div className="ml-2 mt-2">
-                        <p className="text-ml font-small text-gray-900">
+                      <div className="px-2 justify-between">
+                        <p className="mx-auto text-center text-ml font-small text-gray-900">
                           Compare Friends
                         </p>
                       </div>
 
                       <button
                         type="submit"
-                        className="ml-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="inline-flex ml-auto shadow-sm text-ml font-medium rounded-md text-indigo-600 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         onClick={handleConfirm}
                       >
-                        Confirm
+                        Save
                       </button>
                     </div>
                   </div>
