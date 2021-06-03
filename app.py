@@ -1,4 +1,5 @@
 import os
+import pickle
 from flask import (
     Flask,
     send_from_directory,
@@ -11,8 +12,16 @@ from flask import (
 )
 from authlib.integrations.flask_client import OAuth
 
+from tensorflow import keras
+
+from util import get_diversity
+
 app = Flask(__name__, static_folder="build", template_folder="build")
+
 app.config.from_object("config")
+
+model = keras.models.load_model("./race_prediction/race_predictor_mvp")
+encoder = pickle.load(open("./race_prediction/encoder.pkl", "rb"))
 
 oauth = OAuth(app)
 oauth.register(
@@ -55,7 +64,7 @@ def authorize():
     # TODO: Save to DB
     session["token"] = token
     session["user"] = user
-    print(str(session))
+    # print(str(session))
     return redirect("/")
 
 
@@ -90,7 +99,7 @@ def list_followers():
 
     resp = oauth.twitter.get(url, params=params)
     followers = resp.json()
-    print(str(followers))
+    # print(str(followers))
     return jsonify(followers)
 
 
@@ -111,9 +120,28 @@ def list_friends():
 
     resp = oauth.twitter.get(url, params=params)
     friends = resp.json()
-    print(str(friends))
+    # print(str(friends))
     return jsonify(friends)
 
 
+@app.route("/api/diversity")
+def diversity():
+    # TODO: may need more work around pagination
+    url = "friends/list.json"
+    params = {"count": 200}
+    user_id = request.args.get("user_id")
+    if user_id:
+        params["user_id"] = user_id
+    resp = oauth.twitter.get(url, params=params)
+    friends_data = resp.json()
+    aggregated_results = get_diversity(friends_data, model, encoder)
+    for k, v in aggregated_results.items():
+        # 'numpy.int64' is not is not JSON serializable
+        aggregated_results[k] = int(v)
+    return jsonify(aggregated_results)
+
+
 if __name__ == "__main__":
+    # model = keras.models.load_model("race_predictionrace_predictor_mvp")
+    # encoder = pickle.load(open('race_prediction/encoder.pkl', 'rb'))
     app.run(host="localhost", port=5000, debug=True)
