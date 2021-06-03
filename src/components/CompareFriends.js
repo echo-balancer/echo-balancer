@@ -1,29 +1,10 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { FriendsList } from './FriendsList'
 
-export function CompareFriends({ compareData, setCompareData }) {
+export function CompareFriends({ friends, compareData, setCompareData }) {
   const [open, setOpen] = useState(false);
-  const [friends, setFriends] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-
-  useEffect(() => {
-    async function loadFriends() {
-      try {
-        const friendsResponse = await fetch(`/api/friends`, {
-          credentials: 'include',
-        });
-        if (friendsResponse.status === 200) {
-          const friends = await friendsResponse.json();
-          setFriends(friends["users"] || []);
-        }
-      } catch (error) {
-        setFriends([]);
-        return;
-      }
-    }
-    loadFriends();
-  }, []);
 
   function randomInt() {
     return Math.floor((Math.random() * 100) + 1);
