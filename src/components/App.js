@@ -90,7 +90,7 @@ function App() {
             <Report diversityData={diversityData} />
           </PrivateRoute>
           <PrivateRoute path="/friends">
-            <RadarChart friends={friends} />
+            <RadarChart diversityData={diversityData} friends={friends} />
           </PrivateRoute>
           <Route path="/settings">{isLoggedIn && <Logout />}</Route>
         </Switch>
@@ -216,7 +216,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
             to="/friends"
             activeClassName="border-indigo-300"
           >
-            Challenge friends
+            Community Check
           </NavLink>
         </div>
       </nav>
