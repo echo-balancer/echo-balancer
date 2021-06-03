@@ -22,6 +22,8 @@ app.config.from_object("config")
 
 model = keras.models.load_model("./race_prediction/race_predictor_mvp")
 encoder = pickle.load(open("./race_prediction/encoder.pkl", "rb"))
+MAX_PAGES = 3
+
 
 oauth = OAuth(app)
 oauth.register(
@@ -103,14 +105,14 @@ def list_followers():
     return jsonify(followers)
 
 
-@app.route("/api/friends")
-def list_friends():
+@app.route("/api/friends/<offset_id>")
+def list_friends(offset_id=None):
     if not session.get("token", False):
         return jsonify({"message": "ERROR: Unauthorized"}), 401
 
     url = "friends/list.json"
     params = {"count": 200}
-    offset_id = request.args.get("offset")
+    offset_id = offset_id or request.args.get("offset")
     if offset_id:
         params["cursor"] = offset_id
 
@@ -121,7 +123,7 @@ def list_friends():
     resp = oauth.twitter.get(url, params=params)
     friends = resp.json()
     # print(str(friends))
-    return jsonify(friends)
+    return friends
 
 
 @app.route("/api/diversity")
@@ -129,15 +131,15 @@ def diversity():
     if not session.get("token", False):
         return jsonify({"message": "ERROR: Unauthorized"}), 401
 
-    # TODO: may need more work around pagination
-    url = "friends/list.json"
-    params = {"count": 200}
-    user_id = request.args.get("user_id")
-    if user_id:
-        params["user_id"] = user_id
-    resp = oauth.twitter.get(url, params=params)
-    friends_data = resp.json()
-    aggregated_results = get_diversity(friends_data, model, encoder)
+    data = []
+    offset = None
+    for i in range(MAX_PAGES):
+        if i == 0 or offset:
+            response = list_friends(offset)
+            data.extend(response['users'])
+            offset = response.get('next_cursor')
+
+    aggregated_results = get_diversity(data, model, encoder)
     for k, v in aggregated_results.items():
         # 'numpy.int64' is not is not JSON serializable
         aggregated_results[k] = int(v)
@@ -145,6 +147,4 @@ def diversity():
 
 
 if __name__ == "__main__":
-    # model = keras.models.load_model("race_predictionrace_predictor_mvp")
-    # encoder = pickle.load(open('race_prediction/encoder.pkl', 'rb'))
     app.run(host="localhost", port=5000, debug=True)
