@@ -37,6 +37,22 @@ function App() {
   const [diversityData, setDiversityData] = useState(null);
   const [friends, setFriends] = useState([]);
 
+  // TODO: support toggle to influencer mode
+  // API format
+  // const apiData = {
+  //   influencer_other: 3,
+  //   influencer_pctapi: 15,
+  //   influencer_pctblack: 12,
+  //   influencer_pcthispanic: 5,
+  //   influencer_pctwhite: 65,
+  //   influencer_total_count: 109,
+  //   other: 3,
+  //   pctapi: 19,
+  //   pctblack: 12,
+  //   pcthispanic: 5,
+  //   pctwhite: 61,
+  //   total_count: 129,
+  // };
   async function loadDiversityData() {
     try {
       if (isLoggedIn) {
