@@ -7,15 +7,14 @@ export function CompareFriends({ friends, compareData, setCompareData }) {
   const [selectedUser, setSelectedUser] = useState(null);
 
   function randomInt() {
-    return Math.floor((Math.random() * 100) + 1);
+    return Math.floor((Math.random() * 5) + 1);
   }
 
   function handleConfirm() {
     setOpen(false);
-    console.log(selectedUser);
     setCompareData({
       label: `${selectedUser.name}'s network diversity`,
-      data: [randomInt(), randomInt(), randomInt(), 20, 16],
+      data: [randomInt(), randomInt(), randomInt(), 2, 3],
       fill: true,
       backgroundColor: 'rgba(165, 180, 252, 0.4)',
       borderColor: 'rgba(165, 180, 252)',
