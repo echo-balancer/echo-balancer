@@ -137,6 +137,10 @@ def diversity():
         params["user_id"] = user_id
     resp = oauth.twitter.get(url, params=params)
     friends_data = resp.json()
+
+    if "errors" in friends_data:
+        return jsonify({"message": "ERROR: " + friends_data["errors"][0]["message"]}), 500
+
     aggregated_results = get_diversity(friends_data, model, encoder)
     for k, v in aggregated_results.items():
         # 'numpy.int64' is not is not JSON serializable
