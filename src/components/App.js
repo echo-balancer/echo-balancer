@@ -12,6 +12,7 @@ import { Report } from './Report';
 import RadarChart from './RadarChart';
 import { ReactComponent as LoginButton } from './figures/login_button.svg';
 import { ReactComponent as Icon } from './figures/icon1.svg';
+import quote from './figures/quote.png';
 
 const HOST =
   process.env.NODE_ENV !== 'production' ? 'http://localhost:5000' : '';
@@ -22,25 +23,55 @@ function App() {
       process.env.NODE_ENV !== 'production' ||
       document.querySelector('meta[name=login]').content === 'True'
   );
+
+  function PrivateRoute({ children, ...rest }) {
+    return (
+      <Route
+        {...rest}
+        render={() => {
+          return isLoggedIn === true ? children : <Redirect to="/" />;
+        }}
+      />
+    );
+  }
+
+  const [diversityData, setDiversityData] = useState(null);
   const [friends, setFriends] = useState([]);
 
-  useEffect(() => {
-    async function loadFriends() {
-      try {
-        if (isLoggedIn) {
-          const friendsResponse = await fetch(`/api/friends`, {
-            credentials: 'include',
-          });
-          if (friendsResponse.status === 200) {
-            const friends = await friendsResponse.json();
-            setFriends(friends["users"] || []);
-          }
+  // TODO: support toggle to influencer mode
+  async function loadDiversityData() {
+    try {
+      if (isLoggedIn) {
+        const resp = await fetch(`/api/diversity`, {
+          credentials: 'include',
+        });
+        if (resp.status === 200) {
+          const data = await resp.json();
+          setDiversityData(data);
         }
-      } catch (error) {
-        setFriends([]);
-        return;
       }
+    } catch (error) {
+      setDiversityData(null);
     }
+  }
+  async function loadFriends() {
+    try {
+      if (isLoggedIn) {
+        const friendsResponse = await fetch(`/api/friends`, {
+          credentials: 'include',
+        });
+        if (friendsResponse.status === 200) {
+          const friends = await friendsResponse.json();
+          setFriends(friends['users'] || []);
+        }
+      }
+    } catch (error) {
+      setFriends([]);
+      return;
+    }
+  }
+  useEffect(() => {
+    loadDiversityData();
     loadFriends();
   }, []);
 
@@ -55,12 +86,12 @@ function App() {
           <Route exact path="/">
             {isLoggedIn ? <Redirect to="/report" /> : <Landing />}
           </Route>
-          <Route path="/report">
-            <Report />
-          </Route>
-          <Route path="/friends">
-            <RadarChart friends={friends}/>
-          </Route>
+          <PrivateRoute path="/report">
+            <Report diversityData={diversityData} />
+          </PrivateRoute>
+          <PrivateRoute path="/friends">
+            <RadarChart diversityData={diversityData} friends={friends} />
+          </PrivateRoute>
           <Route path="/settings">{isLoggedIn && <Logout />}</Route>
         </Switch>
       </div>
@@ -185,7 +216,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
             to="/friends"
             activeClassName="border-indigo-300"
           >
-            Challenge friends
+            Community Check
           </NavLink>
         </div>
       </nav>
@@ -203,31 +234,43 @@ function Landing() {
       }}
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <Icon className="mx-auto h-12 w-auto" />
-        <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
-          Welcome to Echo Balancer
+        <Icon className="mx-auto" />
+        <h2 className="mt-6 text-center font-bold text-3xl leading-9 text-gray-900">
+          Welcome to <br></br>
+          Echo Balancer
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Find out your Twitter influencers’ diversity*, compare to others from
-          the community, and share your results.
+
+        <img className="mt-6 mx-auto" src={quote} alt="quote" />
+
+        <p
+          className="mx-auto text-center text-sm leading-4 font-medium"
+          style={{ maxWidth: '250px' }}
+        >
+          We need diversity if we are to change, grow, and innovate”
         </p>
 
-        <p className="mt-8 text-center text-sm text-gray-500">
-          *Echo Balancer only shows results when you have more than 100
-          following accounts on Twitter.
+        <p className="mt-2 text-center text-sm font-medium">
+          -- Dr. Katherine W. Phillips
+        </p>
+
+        <p
+          className="mt-12 mx-auto text-center text-sm font-normal leading-6 text-gray-700"
+          style={{ maxWidth: '327px' }}
+        >
+          We believe that informational diversity fuels innovation. Find out how
+          diverse your current Twitter following is!
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="py-8 px-4 sm:px-10">
+        <div className="py-4 px-4 sm:px-10">
           <a href={`${HOST}/auth/login`}>
-            <LoginButton />
+            <LoginButton className="mx-auto"/>
           </a>
+          <p className="ml-6 text-sm text-gray-500">
+            *Privacy disclaimer: we do not store any of your personal data
+          </p>
         </div>
-        <p className="mt-6 px-4 text-sm text-gray-500">
-          Disclaimer: Your private data are safe with us as we do not store any
-          of your data as soon as you close this page.
-        </p>
       </div>
     </div>
   );

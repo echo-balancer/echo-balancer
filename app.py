@@ -155,10 +155,13 @@ def diversity():
     for i in range(MAX_PAGES):
         if i == 0 or offset:
             response = get_follows(offset)
+            if "errors" in response:
+                return jsonify({"message": "ERROR: " + response["errors"][0]["message"]}), 500
             data.extend(response['users'])
             offset = response.get('next_cursor')
 
     aggregated_results = get_diversity(data, model, encoder)
+
     for k, v in aggregated_results.items():
         # 'numpy.int64' is not is not JSON serializable
         aggregated_results[k] = int(v)

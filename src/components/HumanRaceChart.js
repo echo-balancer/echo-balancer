@@ -40,11 +40,6 @@ export function HumanRaceChart({ races, data }) {
           </div>
         ))}
       </div>
-
-      <p className="text-gray-800 text-sm my-2 py-3">
-        No right or wrong, good or bad in the numbers above, though we do
-        believe that diversifying your following brings more of us together!
-      </p>
     </div>
   );
 }

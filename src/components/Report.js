@@ -20,7 +20,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export function Report() {
+export function Report({ diversityData }) {
   let { path, url } = useRouteMatch();
 
   return (
@@ -53,25 +53,39 @@ export function Report() {
 
       <Switch>
         <Route exact path={path}>
-          <RaceReport />
+          <RaceReport diversityData={diversityData} />
         </Route>
         <Route exact path={`${path}/:raceId`}>
-          <RaceReport />
+          <RaceReport diversityData={diversityData} />
         </Route>
       </Switch>
+
+      <p className="text-gray-800 text-sm my-2 py-3">
+        We believe that informational diversity fuels innovation, scroll down to
+        discover a variety of diverse influencers to follow!
+      </p>
     </div>
   );
 }
 
-function RaceReport() {
-  const data = {
-    total: 912,
-    Black: 3,
-    AAPI: 7,
-    Latino: 12,
-    White: 76,
-    Other: 2,
-  };
+function RaceReport({ diversityData }) {
+  const data = diversityData
+    ? {
+        total: diversityData.total_count,
+        Black: diversityData.pctblack,
+        AAPI: diversityData.pctapi,
+        Latino: diversityData.pcthispanic,
+        White: diversityData.pctwhite,
+        Other: diversityData.other,
+      }
+    : {
+        total: 0,
+        Black: 0,
+        AAPI: 0,
+        Latino: 0,
+        White: 0,
+        Other: 0,
+      };
   let { raceId } = useParams();
   const race = tabs.find((t) => t.to.includes(raceId))?.name;
   let races;
@@ -84,9 +98,8 @@ function RaceReport() {
   return (
     <div>
       <p className="text-xs font-semibold">
-        You are following{' '}
-        <span className="text-base font-bold">{data.total}</span> accounts,
-        among which:
+        Based on <span className="text-base font-bold">{data.total}</span> of
+        your following accounts:
       </p>
       <HumanRaceChart races={races} data={data} />
     </div>
