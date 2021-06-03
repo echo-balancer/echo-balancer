@@ -7,7 +7,7 @@ export function CompareFriends({ friends, compareData, setCompareData }) {
   const [selectedUser, setSelectedUser] = useState(null);
 
   function randomInt() {
-    return Math.floor((Math.random() * 5) + 1);
+    return Math.floor((Math.random() * 4) + 1);
   }
 
   function handleConfirm() {
