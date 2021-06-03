@@ -22,6 +22,27 @@ function App() {
       process.env.NODE_ENV !== 'production' ||
       document.querySelector('meta[name=login]').content === 'True'
   );
+  const [friends, setFriends] = useState([]);
+
+  useEffect(() => {
+    async function loadFriends() {
+      try {
+        if (isLoggedIn) {
+          const friendsResponse = await fetch(`/api/friends`, {
+            credentials: 'include',
+          });
+          if (friendsResponse.status === 200) {
+            const friends = await friendsResponse.json();
+            setFriends(friends["users"] || []);
+          }
+        }
+      } catch (error) {
+        setFriends([]);
+        return;
+      }
+    }
+    loadFriends();
+  }, []);
 
   return (
     <Router>
@@ -38,7 +59,7 @@ function App() {
             <Report />
           </Route>
           <Route path="/friends">
-            <RadarChart />
+            <RadarChart friends={friends}/>
           </Route>
           <Route path="/settings">{isLoggedIn && <Logout />}</Route>
         </Switch>
