@@ -22,6 +22,7 @@ app.config.from_object("config")
 
 model = keras.models.load_model("./race_prediction/race_predictor_mvp")
 encoder = pickle.load(open("./race_prediction/encoder.pkl", "rb"))
+MAX_PAGES = 3
 
 oauth = OAuth(app)
 oauth.register(
@@ -124,24 +125,43 @@ def list_friends():
     return jsonify(friends)
 
 
+@app.route("/api/get_follows/<offset_id>")
+def get_follows(offset_id=None):
+    if not session.get("token", False):
+        return jsonify({"message": "ERROR: Unauthorized"}), 401
+
+    url = "friends/list.json"
+    params = {"count": 200}
+    offset_id = offset_id or request.args.get("offset")
+    if offset_id:
+        params["cursor"] = offset_id
+
+    user_id = request.args.get("user_id")
+    if user_id:
+        params["user_id"] = user_id
+
+    resp = oauth.twitter.get(url, params=params)
+    friends = resp.json()
+    return friends
+
+
 @app.route("/api/diversity")
 def diversity():
     if not session.get("token", False):
         return jsonify({"message": "ERROR: Unauthorized"}), 401
 
-    # TODO: may need more work around pagination
-    url = "friends/list.json"
-    params = {"count": 200}
-    user_id = request.args.get("user_id")
-    if user_id:
-        params["user_id"] = user_id
-    resp = oauth.twitter.get(url, params=params)
-    friends_data = resp.json()
+    data = []
+    offset = None
+    for i in range(MAX_PAGES):
+        if i == 0 or offset:
+            response = get_follows(offset)
+            if "errors" in response:
+                return jsonify({"message": "ERROR: " + response["errors"][0]["message"]}), 500
+            data.extend(response['users'])
+            offset = response.get('next_cursor')
 
-    if "errors" in friends_data:
-        return jsonify({"message": "ERROR: " + friends_data["errors"][0]["message"]}), 500
+    aggregated_results = get_diversity(data, model, encoder)
 
-    aggregated_results = get_diversity(friends_data, model, encoder)
     for k, v in aggregated_results.items():
         # 'numpy.int64' is not is not JSON serializable
         aggregated_results[k] = int(v)
@@ -149,6 +169,4 @@ def diversity():
 
 
 if __name__ == "__main__":
-    # model = keras.models.load_model("race_predictionrace_predictor_mvp")
-    # encoder = pickle.load(open('race_prediction/encoder.pkl', 'rb'))
     app.run(host="localhost", port=5000, debug=True)

@@ -8,10 +8,10 @@ import pandas as pd
 from tensorflow import keras
 
 INFLUENCER_MIN_FOLLOWERS = 1000
-INFERENCE_MIN_FOLLOWS = 100
+INFERENCE_MIN_FOLLOWS = 10
 MAX_NAME_LENGTH = 16
 RACES = ['pctwhite', 'pctblack', 'pctapi', 'pcthispanic', 'other']
-NAME_DENY_LIST = {'Journal', 'Institute', 'News', 'The', 'AI', 'Capital'}
+NAME_DENY_LIST = {'Journal', 'Institute', 'News', 'The', 'AI', 'Capital', 'App'}
 
 with open('./race_prediction/data/census.jsonl', 'rb') as json_file:
     CENSUS = {}
@@ -30,7 +30,7 @@ def get_name_and_info(data):
     """prase name from twitter raw data, filter out news publishers/official branded accounts"""
     parsed_data = [
         (get_english_only(i['name']),
-         1 if i['followers_count'] > INFLUENCER_MIN_FOLLOWERS else 0) for i in data['users']
+         1 if i['followers_count'] > INFLUENCER_MIN_FOLLOWERS else 0) for i in data
         if 'news' not in i['description'].lower() and 'official' not in i['description'].lower()]
 
     # hardcoded blacklist to remove obvious business accounts
@@ -108,7 +108,7 @@ def get_diversity(data, model, encoder):
                 df.loc[idx, RACES] = CENSUS[row['last_name']].values()
 
         # ignore the distributions that are less prominent
-        df = df[df[RACES].max(1) > .5]
+        df = df[df[RACES].max(1) > .4]
 
         return {**diversity_calculation(df), **diversity_calculation(df[df['is_influencer'] == 1], 'influencer')}
     else:
