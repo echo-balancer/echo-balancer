@@ -8,7 +8,7 @@ import pandas as pd
 from tensorflow import keras
 
 INFLUENCER_MIN_FOLLOWERS = 1000
-INFERENCE_MIN_FOLLOWS = 50
+INFERENCE_MIN_FOLLOWS = 10
 MAX_NAME_LENGTH = 16
 RACES = ['pctwhite', 'pctblack', 'pctapi', 'pcthispanic', 'other']
 NAME_DENY_LIST = {'Journal', 'Institute', 'News', 'The', 'AI', 'Capital', 'App'}
