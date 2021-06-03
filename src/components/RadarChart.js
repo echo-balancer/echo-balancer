@@ -6,7 +6,7 @@ function RadarChart() {
 
   const myData = {
     label: 'Your network diversity',
-    data: [65, 59, 90, 81, 56],
+    data: [5, 4, 3, 2, 4],
     fill: true,
     backgroundColor: 'rgba(130, 232, 249, 0.4)',
     borderColor: 'rgba(130, 232, 249)',
@@ -38,8 +38,8 @@ function RadarChart() {
     scales: {
       r: {
           min: 0,
-          max: 100,
-      }
+          max: 5,
+      },
     }
   }
 
