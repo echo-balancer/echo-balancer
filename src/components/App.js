@@ -203,30 +203,34 @@ function Landing() {
       }}
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <Icon className="mx-auto h-12 w-auto" />
-        <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
-          Welcome to Echo Balancer
+        <Icon className="mx-auto" />
+        <h2 className="mt-6 text-center font-bold text-3xl leading-9 text-gray-900">
+          Welcome to <br></br>
+          Echo Balancer
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Find out your Twitter influencers’ diversity*, compare to others from
-          the community, and share your results.
+
+        <p className="mt-8 mx-auto text-center text-sm leading-4 font-medium" style={{maxWidth: "250px"}}>
+          "We need diversity if we are to change, grow, and innovate”
         </p>
 
-        <p className="mt-8 text-center text-sm text-gray-500">
-          *Echo Balancer only shows results when you have more than 100
-          following accounts on Twitter.
+        <p className="mt-2 text-center text-sm font-medium">
+          -- Dr. Katherine W. Phillips
+        </p>
+
+        <p className="mt-12 mx-auto text-center text-sm font-normal leading-6 text-gray-700" style={{maxWidth: "327px"}}>
+          We believe that informational diversity 
+          fuels innovation. Find out how diverse your current Twitter following is! 
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="py-8 px-4 sm:px-10">
+      <div className="mt-12 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="py-4 px-4 sm:px-10">
           <a href={`${HOST}/auth/login`}>
             <LoginButton />
           </a>
         </div>
-        <p className="mt-6 px-4 text-sm text-gray-500">
-          Disclaimer: Your private data are safe with us as we do not store any
-          of your data as soon as you close this page.
+        <p className="px-4 text-sm text-gray-500">
+          *Disclaimer: Your private data are safe with us as we do not store any of your data as soon as you close this page.
         </p>
       </div>
     </div>
