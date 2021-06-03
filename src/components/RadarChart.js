@@ -6,7 +6,7 @@ function RadarChart({ friends }) {
 
   const myData = {
     label: 'Your network diversity',
-    data: [5, 4, 3, 2, 4],
+    data: [4, 2.3, 3, 2.1, 1.5],
     fill: true,
     backgroundColor: 'rgba(130, 232, 249, 0.4)',
     borderColor: 'rgba(130, 232, 249)',
@@ -32,15 +32,30 @@ function RadarChart({ friends }) {
   }
 
   const options = {
-    cale: {
-      ticks: { beginAtZero: true },
-    },
     scales: {
       r: {
-          min: 0,
-          max: 5,
-      },
-    }
+        max: 4,
+        min: 0,
+        ticks: {
+          stepSize: 1,
+          showLabelBackdrop: false,
+          color: "rgba(156, 163, 175, 0.75)",
+          z: 5,
+          callback: function (value, index, values) {
+            switch(value) {
+              case 4:
+                return "High";
+              case 3:
+                return "Medium"
+              case 2:
+                return "Low"
+              default:
+                return ""
+            }
+          }
+        },
+      }
+    },
   }
 
   useEffect(() => {
