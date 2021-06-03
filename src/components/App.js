@@ -268,8 +268,7 @@ function Landing() {
             <LoginButton className="mx-auto"/>
           </a>
           <p className="ml-6 text-sm text-gray-500">
-            *Disclaimer: Your private data are safe with us as we do not store any
-            of your data as soon as you close this page.
+            *Privacy disclaimer: we do not store any of your personal data
           </p>
         </div>
       </div>
