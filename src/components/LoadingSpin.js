@@ -1,9 +1,9 @@
 export function LoadingSpin() {
   return (
-    <div className="flex justify-around">
+    <div className="flex justify-around py-8">
       <span className="inline-flex">
         <svg
-          className="animate-spin -ml-1 mr-3 h-5 w-5 text-indigo-500"
+          className="animate-spin -ml-1 mr-3 h-7 w-7 text-indigo-500"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
