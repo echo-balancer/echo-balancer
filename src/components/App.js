@@ -13,6 +13,7 @@ import RadarChart from "./RadarChart";
 import { ReactComponent as LoginButton } from "./figures/login_button.svg";
 import { ReactComponent as Icon } from "./figures/icon1.svg";
 import quote from "./figures/quote.png";
+import { cachedFetch } from "../utils/cachedFetch";
 
 const HOST =
   process.env.NODE_ENV !== "production" ? "http://localhost:5000" : "";
@@ -42,11 +43,8 @@ function App() {
   async function loadDiversityData() {
     try {
       if (isLoggedIn) {
-        const resp = await fetch(`/api/v2/diversity`, {
-          credentials: "include",
-        });
-        const data = await resp.json();
-        if (resp.status === 200) {
+        const { status, json: data } = await cachedFetch("/api/v2/diversity");
+        if (status === 200) {
           setDiversityData(data);
         } else {
           if (data.message) {
@@ -61,11 +59,8 @@ function App() {
   async function loadFriends() {
     try {
       if (isLoggedIn) {
-        const friendsResponse = await fetch(`/api/friends`, {
-          credentials: "include",
-        });
-        const data = await friendsResponse.json();
-        if (friendsResponse.status === 200) {
+        const {status, json: data} = await cachedFetch(`/api/friends`);
+        if (status === 200) {
           setFriends(data["users"] || []);
         } else {
           if (data.message) {
@@ -88,7 +83,7 @@ function App() {
       {!isLoggedIn ? (
         <Landing />
       ) : (
-        <div className="max-w-screen-sm mx-auto">
+        <div className="mx-auto max-w-screen-sm">
           <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
           <Switch>
             <Route exact path="/">
@@ -118,15 +113,13 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
   useEffect(() => {
     async function loadUser() {
       try {
-        const response = await fetch(`/api/me`, {
-          credentials: "include",
-        });
-        if (response.status === 401) {
+        const { status, json } = await cachedFetch("/api/me");
+        if (status === 401) {
           setIsLoggedIn(false);
           setUser(null);
           return;
         }
-        setUser(await response.json());
+        setUser(json);
       } catch (error) {
         setUser(null);
         return;
@@ -138,14 +131,14 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
   return (
     <>
       <header className="text-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex justify-between items-center pt-4">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6">
+          <div className="flex items-center justify-between pt-4">
             <Menu as="div" className="relative inline-block text-left">
               {({ open }) => (
                 <>
                   <div>
-                    <Menu.Button className=" flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
-                      <MenuAlt1Icon className="h-8 w-8" aria-hidden="true" />
+                    <Menu.Button className="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+                      <MenuAlt1Icon className="w-8 h-8" aria-hidden="true" />
                     </Menu.Button>
                   </div>
 
@@ -161,7 +154,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
                   >
                     <Menu.Items
                       static
-                      className="origin-top-left absolute left-0 mt-2 w-24 rounded-md shadow-lg bg-white ring-1 left-black ring-opacity-5 focus:outline-none"
+                      className="absolute left-0 w-24 mt-2 bg-white shadow-lg origin-top-left rounded-md ring-1 left-black ring-opacity-5 focus:outline-none"
                     >
                       <div className="py-1">
                         <a href={`${HOST}/auth/logout`}>
@@ -189,21 +182,21 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
             </Menu>
 
             <div className="">
-              <Icon className="mx-auto h-12 w-auto"></Icon>
+              <Icon className="w-auto h-12 mx-auto"></Icon>
             </div>
           </div>
 
           <div className="flex items-center space-x-4">
             <img
-              className="mt-4 ml-4 w-16 h-16 rounded-full lg:w-20 lg:h-20"
+              className="w-16 h-16 mt-4 ml-4 rounded-full lg:w-20 lg:h-20"
               src={user && user.profile_image_url_https}
               alt=""
             />
-            <div className="mt-4 font-medium text-lg leading-4">
-              <h3 className="text-2xl text-left font-semibold text-gray-900">
+            <div className="mt-4 text-lg font-medium leading-4">
+              <h3 className="text-2xl font-semibold text-left text-gray-900">
                 Hello, {user && user.name}!
               </h3>
-              <p className="text-xs text-left font-normal text-gray-500">
+              <p className="text-xs font-normal text-left text-gray-500">
                 Welcome! Let's explore your network diversity
               </p>
             </div>
@@ -212,13 +205,13 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
       </header>
 
       <nav className="bg-white">
-        <div className="text-gray-500 mx-auto px-4 flex font-medium text-sm items-center justify-center h-8">
+        <div className="flex items-center justify-center h-8 px-4 mx-auto text-sm font-medium text-gray-500">
           <NavLink
             className="nav-link"
             to="/report"
             activeClassName="text-indigo-600 border-indigo-600"
           >
-            Diversity report
+            Diversity Report
           </NavLink>
           <NavLink
             className="nav-link"
@@ -236,7 +229,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
 function Landing() {
   return (
     <div
-      className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8"
+      className="flex flex-col justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8"
       style={{
         background:
           "linear-gradient(180deg, #A5B4FC 0%, rgba(238, 242, 255, 0) 100%)",
@@ -244,26 +237,26 @@ function Landing() {
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <Icon className="mx-auto" />
-        <h2 className="mt-6 text-center font-bold text-3xl leading-9 text-gray-900">
+        <h2 className="mt-6 text-3xl font-bold text-center text-gray-900 leading-9">
           Welcome to <br></br>
           Echo Balancer
         </h2>
 
-        <img className="mt-6 mx-auto" src={quote} alt="quote" />
+        <img className="mx-auto mt-6" src={quote} alt="quote" />
 
         <p
-          className="mx-auto text-center text-sm leading-4 font-medium"
+          className="mx-auto text-sm font-medium text-center leading-4"
           style={{ maxWidth: "250px" }}
         >
           We need diversity if we are to change, grow, and innovate”
         </p>
 
-        <p className="mt-2 text-center text-sm font-medium">
+        <p className="mt-2 text-sm font-medium text-center">
           -- Dr. Katherine W. Phillips
         </p>
 
         <p
-          className="mt-12 mx-auto text-center text-sm font-normal leading-6 text-gray-700"
+          className="mx-auto mt-12 text-sm font-normal text-center text-gray-700 leading-6"
           style={{ maxWidth: "327px" }}
         >
           We believe that informational diversity fuels innovation. Find out how
@@ -272,7 +265,7 @@ function Landing() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="py-4 px-4 sm:px-10">
+        <div className="px-4 py-4 sm:px-10">
           <a href={`${HOST}/auth/login`}>
             <LoginButton className="mx-auto" />
           </a>
