@@ -29,7 +29,7 @@ export function HumanRaceChart({ races, data }) {
     <div>
       <div className="flex justify-around my-2 space-x-1.5">
         {stats.slice(0, -1).map(({ race, percentage }) => (
-          <FigureWithDescription race={race} percentage={percentage} />
+          <FigureWithDescription key={race} race={race} percentage={percentage} />
         ))}
       </div>
 
