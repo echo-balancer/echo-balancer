@@ -85,24 +85,25 @@ function App() {
 
   return (
     <Router>
-      <div className="">
-        {isLoggedIn && (
+      {!isLoggedIn ? (
+        <Landing />
+      ) : (
+        <div className="max-w-screen-sm mx-auto">
           <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-        )}
-
-        <Switch>
-          <Route exact path="/">
-            {isLoggedIn ? <Redirect to="/report" /> : <Landing />}
-          </Route>
-          <PrivateRoute path="/report">
-            <Report diversityData={diversityData} />
-          </PrivateRoute>
-          <PrivateRoute path="/friends">
-            <RadarChart diversityData={diversityData} friends={friends} />
-          </PrivateRoute>
-          <Route path="/settings">{isLoggedIn && <Logout />}</Route>
-        </Switch>
-      </div>
+          <Switch>
+            <Route exact path="/">
+              <Redirect to="/report" />
+            </Route>
+            <PrivateRoute path="/report">
+              <Report diversityData={diversityData} />
+            </PrivateRoute>
+            <PrivateRoute path="/friends">
+              <RadarChart diversityData={diversityData} friends={friends} />
+            </PrivateRoute>
+            <Route path="/settings">{isLoggedIn && <Logout />}</Route>
+          </Switch>
+        </div>
+      )}
     </Router>
   );
 }
@@ -138,7 +139,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
     <>
       <header className="text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex justify-between items-center pt-4 md:justify-start md:space-x-10">
+          <div className="flex justify-between items-center pt-4">
             <Menu as="div" className="relative inline-block text-left">
               {({ open }) => (
                 <>
@@ -187,12 +188,12 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
               )}
             </Menu>
 
-            <div className="flex justify-start lg:w-0 lg:flex-1">
+            <div className="">
               <Icon className="mx-auto h-12 w-auto"></Icon>
             </div>
           </div>
 
-          <div className="flex items-center space-x-4 lg:space-x-6">
+          <div className="flex items-center space-x-4">
             <img
               className="mt-4 ml-4 w-16 h-16 rounded-full lg:w-20 lg:h-20"
               src={user && user.profile_image_url_https}
