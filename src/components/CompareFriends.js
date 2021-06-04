@@ -21,7 +21,7 @@ export function CompareFriends({
   async function loadDiversityData(user_id) {
     try {
       const { status, json: data } = await cachedFetch(
-        `/api/diversity?user_id=${user_id}`
+        `/api/diversity?user_id=${String(user_id)}` // Twitter id can sometimes be too long :p
       );
       if (status === 200) {
         setFriendDiversityData(data);
