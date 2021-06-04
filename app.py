@@ -156,7 +156,7 @@ def diversity():
         if i == 0 or offset:
             response = get_follows(offset)
             if "errors" in response:
-                return jsonify({"message": "ERROR: " + response["errors"][0]["message"]}), 500
+                return jsonify({"message": response["errors"][0]["message"] + ". Please try again later."}), 500
             data.extend(response['users'])
             offset = response.get('next_cursor')
 

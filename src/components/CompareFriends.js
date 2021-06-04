@@ -22,10 +22,13 @@ export function CompareFriends({
       const resp = await fetch(`/api/diversity?user_id=${user_id}`, {
         credentials: "include",
       });
+      const data = await resp.json();
       if (resp.status === 200) {
-        const data = await resp.json();
         setFriendDiversityData(data);
       } else {
+        if (data.message) {
+          alert(data.message);
+        }
         setFriendDiversityData({});
       }
     } catch (error) {
