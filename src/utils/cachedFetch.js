@@ -1,4 +1,4 @@
-import { set, get } from "idb-keyval";
+import { set, get, clear } from "idb-keyval";
 
 const TTL = 10 * 60 * 1000;
 
@@ -24,6 +24,14 @@ export async function cachedFetch(url) {
     set(url, fetchResult).catch((e) => console.error(e));
     return { status, json };
   } else {
+    if (status === 401) {
+      clearCache();
+    }
     return { status, json: null };
   }
+}
+
+export function clearCache() {
+  console.log("[cachedFetch] clear cache");
+  clear();
 }

@@ -13,7 +13,7 @@ import RadarChart from "./RadarChart";
 import { ReactComponent as LoginButton } from "./figures/login_button.svg";
 import { ReactComponent as Icon } from "./figures/icon1.svg";
 import quote from "./figures/quote.png";
-import { cachedFetch } from "../utils/cachedFetch";
+import { cachedFetch, clearCache } from "../utils/cachedFetch";
 
 const HOST =
   process.env.NODE_ENV !== "production" ? "http://localhost:5000" : "";
@@ -59,7 +59,7 @@ function App() {
   async function loadFriends() {
     try {
       if (isLoggedIn) {
-        const {status, json: data} = await cachedFetch(`/api/friends`);
+        const { status, json: data } = await cachedFetch(`/api/friends`);
         if (status === 200) {
           setFriends(data["users"] || []);
         } else {
@@ -95,7 +95,6 @@ function App() {
             <PrivateRoute path="/friends">
               <RadarChart diversityData={diversityData} friends={friends} />
             </PrivateRoute>
-            <Route path="/settings">{isLoggedIn && <Logout />}</Route>
           </Switch>
         </div>
       )}
@@ -108,6 +107,11 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
+  }
+
+  function onClickHandler() {
+    clearCache();
+    window.location.replace(`${HOST}/auth/logout`);
   }
 
   useEffect(() => {
@@ -157,23 +161,22 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
                       className="absolute left-0 w-24 mt-2 bg-white shadow-lg origin-top-left rounded-md ring-1 left-black ring-opacity-5 focus:outline-none"
                     >
                       <div className="py-1">
-                        <a href={`${HOST}/auth/logout`}>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                type="submit"
-                                className={classNames(
-                                  active
-                                    ? "bg-gray-100 text-gray-900"
-                                    : "text-gray-700",
-                                  "block w-full text-left px-4 py-2 text-sm"
-                                )}
-                              >
-                                Log out
-                              </button>
-                            )}
-                          </Menu.Item>
-                        </a>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              type="submit"
+                              className={classNames(
+                                active
+                                  ? "bg-gray-100 text-gray-900"
+                                  : "text-gray-700",
+                                "block w-full text-left px-4 py-2 text-sm"
+                              )}
+                              onClick={onClickHandler}
+                            >
+                              Log out
+                            </button>
+                          )}
+                        </Menu.Item>
                       </div>
                     </Menu.Items>
                   </Transition>
@@ -275,16 +278,6 @@ function Landing() {
         </div>
       </div>
     </div>
-  );
-}
-
-function Logout() {
-  return (
-    <a href={`${HOST}/auth/logout`}>
-      <button type="button" className="btn">
-        Logout
-      </button>
-    </a>
   );
 }
 
