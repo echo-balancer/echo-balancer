@@ -10,10 +10,11 @@ import {
 } from "react-router-dom";
 import { Report } from "./Report";
 import RadarChart from "./RadarChart";
-import { ReactComponent as LoginButton } from "./figures/login_button.svg";
-import { ReactComponent as Icon } from "./figures/icon1.svg";
-import quote from "./figures/quote.png";
 import { cachedFetch, clearCache } from "../utils/cachedFetch";
+import { ReactComponent as LoginButton } from "./figures/login_button.svg";
+import logo from "./figures/Logo.png";
+import quote from "./figures/quote.png";
+import shape from "./figures/Shape-2.png";
 
 const HOST =
   process.env.NODE_ENV !== "production" ? "http://localhost:5000" : "";
@@ -185,7 +186,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
             </Menu>
 
             <div className="">
-              <Icon className="w-auto h-12 mx-auto"></Icon>
+              <img className="w-auto h-12 mx-auto" src={logo} alt="logo" />
             </div>
           </div>
 
@@ -239,42 +240,59 @@ function Landing() {
       }}
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <Icon className="mx-auto" />
-        <h2 className="mt-6 text-3xl font-bold text-center text-gray-900 leading-9">
-          Welcome to <br></br>
-          Echo Balancer
-        </h2>
+        <img
+          src={shape}
+          alt="shape"
+          style={{
+            position: "absolute",
+            left: "0%",
+            top: "10.19%",
+          }}
+        />
+        <div className="sm:mx-auto sm:w-full sm:max-w-md z-10">
+          <img
+            className="w-auto mx-auto"
+            src={logo}
+            alt="logo"
+            style={{ width: "72px" }}
+          />
+          <h2 className="mt-6 text-3xl font-bold text-center text-gray-900 leading-9">
+            Welcome to <br></br>
+            Echo Balancer
+          </h2>
 
-        <img className="mx-auto mt-6" src={quote} alt="quote" />
+          <img className="py-4 mx-auto" src={quote} alt="quote" />
 
-        <p
-          className="mx-auto text-sm font-medium text-center leading-4"
-          style={{ maxWidth: "250px" }}
-        >
-          We need diversity if we are to change, grow, and innovate”
-        </p>
-
-        <p className="mt-2 text-sm font-medium text-center">
-          -- Dr. Katherine W. Phillips
-        </p>
-
-        <p
-          className="mx-auto mt-12 text-sm font-normal text-center text-gray-700 leading-6"
-          style={{ maxWidth: "327px" }}
-        >
-          We believe that informational diversity fuels innovation. Find out how
-          diverse your current Twitter following is!
-        </p>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="px-4 py-4 sm:px-10">
-          <a href={`${HOST}/auth/login`}>
-            <LoginButton className="mx-auto" />
-          </a>
-          <p className="ml-6 text-sm text-gray-500">
-            *Privacy disclaimer: we do not store any of your personal data
+          <p
+            className="mx-auto text-center text-sm leading-4 font-medium"
+            style={{ maxWidth: "300px" }}
+          >
+            We need diversity if we are to change, grow, and innovate”
           </p>
+
+          <p className="mt-2 text-sm font-medium text-center">
+            -- Dr. Katherine W. Phillips
+          </p>
+
+          <p
+            className="mx-auto mt-12 text-sm font-normal text-center text-gray-700 leading-6"
+            style={{ maxWidth: "327px" }}
+          >
+            We believe that informational diversity fuels innovation. Find out
+            how diverse your current Twitter following is!
+          </p>
+        </div>
+
+        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+          <div className="px-4 py-4 sm:px-10">
+            <a href={`${HOST}/auth/login`}>
+              <LoginButton className="mx-auto" />
+            </a>
+            <p className="mt-2 px-4 text-sm text-gray-500">
+              Disclaimer: Your private data are safe with us as we do not store
+              any of your data as soon as you close this page.
+            </p>
+          </div>
         </div>
       </div>
     </div>

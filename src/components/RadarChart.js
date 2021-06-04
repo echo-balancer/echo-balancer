@@ -96,7 +96,7 @@ function RadarChart({ diversityData, friends }) {
     <LoadingSpin />
   ) : (
     <>
-      <Radar data={data} options={options} />
+      <Radar className="mt-8" data={data} options={options} />
       <CompareFriends
         friends={friends}
         setFriendLabel={setFriendLabel}

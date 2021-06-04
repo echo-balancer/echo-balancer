@@ -114,10 +114,10 @@ export function CompareFriends({
         </Dialog>
       </Transition.Root>
 
-      <div className="flex py-2">
+      <div className="flex py-4">
         <button
           type="button"
-          className="inline-flex px-4 py-2 mx-auto text-sm font-medium text-white bg-indigo-600 border border-transparent w-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="inline-flex px-4 py-2 mx-auto w-full justify-center text-sm font-medium text-white bg-indigo-600 border border-transparent w-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           onClick={() => setOpen(true)}
         >
           Select a friend to compare
