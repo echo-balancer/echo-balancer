@@ -239,17 +239,17 @@ function Landing() {
           "linear-gradient(180deg, #A5B4FC 0%, rgba(238, 242, 255, 0) 100%)",
       }}
     >
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <img
-          src={shape}
-          alt="shape"
-          style={{
-            position: "absolute",
-            left: "0%",
-            top: "10.19%",
-          }}
-        />
-        <div className="sm:mx-auto sm:w-full sm:max-w-md z-10">
+      <img
+        src={shape}
+        alt="shape"
+        style={{
+          position: "absolute",
+          left: "0%",
+          top: "10.19%",
+        }}
+      />
+      <div className="sm:mx-auto sm:w-full sm:max-w-md z-10">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <img
             className="w-auto mx-auto"
             src={logo}
