@@ -42,7 +42,7 @@ function App() {
   async function loadDiversityData() {
     try {
       if (isLoggedIn) {
-        const resp = await fetch(`/api/diversity`, {
+        const resp = await fetch(`/api/v2/diversity?count=2000`, {
           credentials: "include",
         });
         const data = await resp.json();

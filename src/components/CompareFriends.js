@@ -19,7 +19,7 @@ export function CompareFriends({
 
   async function loadDiversityData(user_id) {
     try {
-      const resp = await fetch(`/api/diversity?user_id=${user_id}`, {
+      const resp = await fetch(`/api/diversity?user_id=${user_id}&count=2000`, {
         credentials: "include",
       });
       const data = await resp.json();

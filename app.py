@@ -100,8 +100,95 @@ def list_followers():
 
     resp = oauth.twitter.get(url, params=params)
     followers = resp.json()
-    # print(str(followers))
     return jsonify(followers)
+
+
+@app.route("/api/friend_ids")
+def list_friend_ids():
+    if not session.get("token", False):
+        return jsonify({"message": "ERROR: Unauthorized"}), 401
+
+    url = "friends/ids.json"
+    params = {"count": 5000}
+
+    count = request.args.get("count")
+    if count:
+        params["count"] = count
+
+    offset_id = request.args.get("offset")
+    if offset_id:
+        params["cursor"] = offset_id
+
+    user_id = request.args.get("user_id")
+    if user_id:
+        params["user_id"] = user_id
+
+    resp = oauth.twitter.get(url, params=params)
+    friends = resp.json()
+    return jsonify(friends)
+
+
+@app.route("/api/users/lookup", methods=["POST"])
+def list_users():
+    if not session.get("token", False):
+        return jsonify({"message": "ERROR: Unauthorized"}), 401
+
+    url = "users/lookup.json"
+    data = {}
+
+    request_body = request.json
+    offset_id = request_body.get("offset")
+    if offset_id:
+        data["cursor"] = offset_id
+
+    user_id = request_body.get("user_id")
+    if user_id:
+        data["user_id"] = user_id
+
+    resp = oauth.twitter.post(url, data=data)
+    return jsonify(resp.json())
+
+
+@app.route("/api/v2/diversity")
+def v2_diversity():
+    if not session.get("token", False):
+        return jsonify({"message": "ERROR: Unauthorized"}), 401
+
+    # Get friend ids
+    url = "friends/ids.json"
+    params = {"count": 1000}
+
+    user_id = request.args.get("user_id")
+    if user_id:
+        params["user_id"] = user_id
+
+    count = request.args.get("count")
+    if count:
+        params["count"] = count
+
+    response = oauth.twitter.get(url, params=params)
+    friend_ids = response.json()
+    if "errors" in friend_ids:
+        return jsonify({"message": friend_ids["errors"][0]["message"] + ". Please try again later."}), 500
+
+    # Fetch users
+    user_ids = [str(id) for id in friend_ids["ids"]]
+    user_url = "users/lookup.json"
+
+    friends = []
+    for i in range(0, len(user_ids), 100):
+        resp = oauth.twitter.post(user_url, data={"user_id": ",".join(user_ids[i:i+100])})
+        resp_body = resp.json()
+        if "errors" in resp_body:
+            return jsonify({"message": resp_body["errors"][0]["message"] + ". Please try again later."}), 500
+        friends.extend(resp_body)
+
+    aggregated_results = get_diversity(friends, model, encoder)
+
+    for k, v in aggregated_results.items():
+        # 'numpy.int64' is not is not JSON serializable
+        aggregated_results[k] = int(v)
+    return jsonify(aggregated_results)
 
 
 @app.route("/api/friends")
@@ -121,7 +208,6 @@ def list_friends():
 
     resp = oauth.twitter.get(url, params=params)
     friends = resp.json()
-    # print(str(friends))
     return jsonify(friends)
 
 
