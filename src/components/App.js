@@ -1,27 +1,27 @@
-import { Fragment, useEffect, useState } from 'react';
-import { Menu, Transition } from '@headlessui/react';
-import { MenuAlt1Icon } from '@heroicons/react/outline';
+import { Fragment, useEffect, useState } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { MenuAlt1Icon } from "@heroicons/react/outline";
 import {
   BrowserRouter as Router,
   Switch,
   Redirect,
   Route,
   NavLink,
-} from 'react-router-dom';
-import { Report } from './Report';
-import RadarChart from './RadarChart';
-import { ReactComponent as LoginButton } from './figures/login_button.svg';
-import { ReactComponent as Icon } from './figures/icon1.svg';
-import quote from './figures/quote.png';
+} from "react-router-dom";
+import { Report } from "./Report";
+import RadarChart from "./RadarChart";
+import { ReactComponent as LoginButton } from "./figures/login_button.svg";
+import { ReactComponent as Icon } from "./figures/icon1.svg";
+import quote from "./figures/quote.png";
 
 const HOST =
-  process.env.NODE_ENV !== 'production' ? 'http://localhost:5000' : '';
+  process.env.NODE_ENV !== "production" ? "http://localhost:5000" : "";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
     () =>
-      process.env.NODE_ENV !== 'production' ||
-      document.querySelector('meta[name=login]').content === 'True'
+      process.env.NODE_ENV !== "production" ||
+      document.querySelector("meta[name=login]").content === "True"
   );
 
   function PrivateRoute({ children, ...rest }) {
@@ -43,11 +43,15 @@ function App() {
     try {
       if (isLoggedIn) {
         const resp = await fetch(`/api/diversity`, {
-          credentials: 'include',
+          credentials: "include",
         });
+        const data = await resp.json();
         if (resp.status === 200) {
-          const data = await resp.json();
           setDiversityData(data);
+        } else {
+          if (data.message) {
+            alert(data.message);
+          }
         }
       }
     } catch (error) {
@@ -58,11 +62,15 @@ function App() {
     try {
       if (isLoggedIn) {
         const friendsResponse = await fetch(`/api/friends`, {
-          credentials: 'include',
+          credentials: "include",
         });
+        const data = await friendsResponse.json();
         if (friendsResponse.status === 200) {
-          const friends = await friendsResponse.json();
-          setFriends(friends['users'] || []);
+          setFriends(data["users"] || []);
+        } else {
+          if (data.message) {
+            alert(data.message);
+          }
         }
       }
     } catch (error) {
@@ -103,14 +111,14 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
   const [user, setUser] = useState();
 
   function classNames(...classes) {
-    return classes.filter(Boolean).join(' ');
+    return classes.filter(Boolean).join(" ");
   }
 
   useEffect(() => {
     async function loadUser() {
       try {
         const response = await fetch(`/api/me`, {
-          credentials: 'include',
+          credentials: "include",
         });
         if (response.status === 401) {
           setIsLoggedIn(false);
@@ -162,9 +170,9 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
                                 type="submit"
                                 className={classNames(
                                   active
-                                    ? 'bg-gray-100 text-gray-900'
-                                    : 'text-gray-700',
-                                  'block w-full text-left px-4 py-2 text-sm'
+                                    ? "bg-gray-100 text-gray-900"
+                                    : "text-gray-700",
+                                  "block w-full text-left px-4 py-2 text-sm"
                                 )}
                               >
                                 Log out
@@ -230,7 +238,7 @@ function Landing() {
       className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8"
       style={{
         background:
-          'linear-gradient(180deg, #A5B4FC 0%, rgba(238, 242, 255, 0) 100%)',
+          "linear-gradient(180deg, #A5B4FC 0%, rgba(238, 242, 255, 0) 100%)",
       }}
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -244,7 +252,7 @@ function Landing() {
 
         <p
           className="mx-auto text-center text-sm leading-4 font-medium"
-          style={{ maxWidth: '250px' }}
+          style={{ maxWidth: "250px" }}
         >
           We need diversity if we are to change, grow, and innovate”
         </p>
@@ -255,7 +263,7 @@ function Landing() {
 
         <p
           className="mt-12 mx-auto text-center text-sm font-normal leading-6 text-gray-700"
-          style={{ maxWidth: '327px' }}
+          style={{ maxWidth: "327px" }}
         >
           We believe that informational diversity fuels innovation. Find out how
           diverse your current Twitter following is!
@@ -265,7 +273,7 @@ function Landing() {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="py-4 px-4 sm:px-10">
           <a href={`${HOST}/auth/login`}>
-            <LoginButton className="mx-auto"/>
+            <LoginButton className="mx-auto" />
           </a>
           <p className="ml-6 text-sm text-gray-500">
             *Privacy disclaimer: we do not store any of your personal data
