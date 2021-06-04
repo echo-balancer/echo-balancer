@@ -156,7 +156,7 @@ def v2_diversity():
 
     # Get friend ids
     url = "friends/ids.json"
-    params = {"count": 1000}
+    params = {"count": 5000}
 
     user_id = request.args.get("user_id")
     if user_id:
@@ -169,7 +169,7 @@ def v2_diversity():
     response = oauth.twitter.get(url, params=params)
     friend_ids = response.json()
     if "errors" in friend_ids:
-        return jsonify({"message": friend_ids["errors"][0]["message"] + ". Please try again later."}), 500
+        return jsonify({"message": "Twitter Error: " + friend_ids["errors"][0]["message"] + ". Please try again later."}), 500
 
     # Fetch users
     user_ids = [str(id) for id in friend_ids["ids"]]
@@ -180,7 +180,7 @@ def v2_diversity():
         resp = oauth.twitter.post(user_url, data={"user_id": ",".join(user_ids[i:i+100])})
         resp_body = resp.json()
         if "errors" in resp_body:
-            return jsonify({"message": resp_body["errors"][0]["message"] + ". Please try again later."}), 500
+            return jsonify({"message": "Twitter Error: " + resp_body["errors"][0]["message"] + ". Please try again later."}), 500
         friends.extend(resp_body)
 
     aggregated_results = get_diversity(friends, model, encoder)
@@ -242,7 +242,7 @@ def diversity():
         if i == 0 or offset:
             response = get_follows(offset)
             if "errors" in response:
-                return jsonify({"message": response["errors"][0]["message"] + ". Please try again later."}), 500
+                return jsonify({"message": "Twitter Error: " + response["errors"][0]["message"] + ". Please try again later."}), 500
             data.extend(response['users'])
             offset = response.get('next_cursor')
 
