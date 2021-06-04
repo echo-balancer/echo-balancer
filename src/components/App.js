@@ -188,7 +188,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
               )}
             </Menu>
 
-            <div className="flex justify-start lg:w-0 lg:flex-1">
+            <div className="">
               <Icon className="mx-auto h-12 w-auto"></Icon>
             </div>
           </div>
