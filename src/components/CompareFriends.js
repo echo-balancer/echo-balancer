@@ -14,14 +14,14 @@ export function CompareFriends({
   function handleConfirm() {
     setFriendLabel(`${selectedUser.name}'s network diversity`);
     setFriendDiversityData(null);
-    loadDiversityData(selectedUser.id);
+    loadDiversityData(selectedUser.id_str);
     setOpen(false);
   }
 
   async function loadDiversityData(user_id) {
     try {
       const { status, json: data } = await cachedFetch(
-        `/api/diversity?user_id=${String(user_id)}` // Twitter id can sometimes be too long :p
+        `/api/diversity?user_id=${user_id}`
       );
       if (status === 200) {
         setFriendDiversityData(data);
