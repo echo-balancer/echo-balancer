@@ -212,18 +212,18 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
       </header>
 
       <nav className="bg-white">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 flex text-xs items-center justify-center h-8">
+        <div className="text-gray-500 mx-auto px-4 flex font-medium text-sm items-center justify-center h-8">
           <NavLink
             className="nav-link"
-            to="/"
-            activeClassName="border-indigo-300"
+            to="/report"
+            activeClassName="text-indigo-600 border-indigo-600"
           >
             Diversity report
           </NavLink>
           <NavLink
             className="nav-link"
             to="/friends"
-            activeClassName="border-indigo-300"
+            activeClassName="text-indigo-600 border-indigo-600"
           >
             Community Check
           </NavLink>
