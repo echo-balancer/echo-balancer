@@ -75,13 +75,16 @@ export function CompareFriends({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <div className="inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom bg-white rounded-lg shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
+              <div
+                className="inline-block px-4 pt-5 pb-4 w-full overflow-hidden text-left align-bottom bg-white rounded-lg shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6"
+                style={{ maxWidth: "640px" }}
+              >
                 <div>
                   <div className="px-4 py-5 bg-white border-b border-gray-200 sm:px-6">
                     <div className="flex items-center -mt-2 -ml-4 sm:flex-nowrap">
                       <button
                         type="button"
-                        className="mr-auto font-medium text-gray-600 rounded-md shadow-sm text-ml hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="mr-auto font-medium text-gray-600 rounded-md shadow-sm text-ml hover:text-gray-700 focus:outline-none"
                         onClick={() => setOpen(false)}
                       >
                         Cancel
@@ -95,7 +98,7 @@ export function CompareFriends({
 
                       <button
                         type="submit"
-                        className="inline-flex ml-auto font-medium text-indigo-600 shadow-sm text-ml rounded-md hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="inline-flex ml-auto font-medium text-indigo-600 shadow-sm text-ml rounded-md hover:text-indigo-700 focus:outline-none"
                         onClick={handleConfirm}
                       >
                         Save
@@ -117,12 +120,18 @@ export function CompareFriends({
       <div className="flex py-4">
         <button
           type="button"
-          className="inline-flex px-4 py-2 mx-auto w-full justify-center text-sm font-medium text-white bg-indigo-600 border border-transparent w-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="inline-flex px-4 py-2 mx-auto w-medium justify-center text-sm font-medium text-white bg-indigo-600 border border-transparent w-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           onClick={() => setOpen(true)}
         >
           Select a friend to compare
         </button>
       </div>
+
+      <p className="mt-1 sm:mx-auto px-6 text-xs text-gray-500">
+        *The low-medium-high is determined based on the percentage of each race
+        within your Twitter following, 5% or below is deemed as low and anything
+        above 20% is deemed as high.
+      </p>
     </>
   );
 }

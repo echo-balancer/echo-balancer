@@ -7,7 +7,6 @@ function classNames(...classes) {
 export function FriendsList({ friends, selectedUser, setSelectedUser }) {
   return (
     <RadioGroup value={selectedUser} onChange={setSelectedUser}>
-      <RadioGroup.Label className="sr-only">Server size</RadioGroup.Label>
       <div className="space-y-4">
         {friends &&
           friends.map((friend) => (
