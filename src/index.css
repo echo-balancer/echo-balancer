@@ -7,5 +7,5 @@
 }
 
 .nav-link {
-  @apply text-gray-500 mx-auto flex-1 text-center px-1 pt-1 border-b-2 text-sm font-medium;
+  @apply mx-auto py-2 flex-1 text-center px-1 border-b-2;
 }
