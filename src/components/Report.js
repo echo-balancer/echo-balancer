@@ -124,7 +124,7 @@ function InfluencerRecommendations() {
     }
     const mapped = json.users.map(
       ({ name, description, profile_image_url_https, screen_name }) => ({
-        name,
+        name: name.length > 20 ? name.slice(0, 20) + '...' : name,
         description,
         imageUrl: profile_image_url_https,
         handle: screen_name,
@@ -146,7 +146,7 @@ function InfluencerRecommendations() {
       <div className="flow-root">
         <ul className="">
           {influencers.map((person) => (
-            <li key={person.handle} className="px-4 py-2 my-2 rounded shadow">
+            <li key={person.handle} className="px-2 py-2 my-2 rounded shadow md:px-4">
               <div className="flex items-center w-full space-x-4">
                 <div className="flex-shrink-0">
                   <img
@@ -156,7 +156,7 @@ function InfluencerRecommendations() {
                   />
                 </div>
                 <div className="w-full">
-                  <div className="flex">
+                  <div className="flex max-w-xs">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 truncate">
                         {person.name}
@@ -170,14 +170,14 @@ function InfluencerRecommendations() {
                         href={person.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center shadow-sm mr-2.5 px-3.5 py-1.5 text-sm leading-5 font-medium rounded-full text-white bg-blue-400 hover:bg-blue-500"
+                        className="inline-flex items-center shadow-sm md:mr-2.5 px-3.5 py-1.5 text-sm leading-5 font-medium rounded-full text-white bg-blue-400 hover:bg-blue-500"
                       >
                         Follow
                       </a>
                     </div>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-900">
+                    <p className="text-sm text-gray-900 overflow-ellipsis">
                       {person.description}
                     </p>
                   </div>
