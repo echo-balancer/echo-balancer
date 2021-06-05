@@ -130,8 +130,7 @@ function InfluencerRecommendations() {
         url: `https://twitter.com/${screen_name}`,
       })
     );
-    setInfluencers(shuffle(mapped));
-    console.log(mapped);
+    setInfluencers(shuffle(mapped).slice(0, 20));
   }
   useEffect(() => {
     loadRecommendations();
@@ -152,7 +151,7 @@ function InfluencerRecommendations() {
                     alt={person.name}
                   />
                 </div>
-                <div className="w-max">
+                <div className="w-full">
                   <div className="flex">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 truncate">

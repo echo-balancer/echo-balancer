@@ -237,7 +237,7 @@ def get_influencer_recommendations():
         return jsonify({"message": "ERROR: Unauthorized"}), 401
 
     url = "lists/members.json"
-    params = {"count": 20, "list_id": 1230956746601975808}
+    params = {"count": 89, "list_id": 1230956746601975808}
 
     resp = oauth.twitter.get(url, params=params)
     return jsonify(resp.json())
