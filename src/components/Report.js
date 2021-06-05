@@ -156,7 +156,7 @@ function InfluencerRecommendations() {
                   />
                 </div>
                 <div className="w-full">
-                  <div className="flex max-w-xs">
+                  <div className="flex">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 truncate">
                         {person.name}
