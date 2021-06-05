@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Switch,
   Route,
@@ -5,6 +6,7 @@ import {
   useParams,
   useRouteMatch,
 } from "react-router-dom";
+import { cachedFetch } from "../utils/cachedFetch";
 import { HumanRaceChart } from "./HumanRaceChart";
 import { LoadingSpin } from "./LoadingSpin";
 
@@ -63,10 +65,12 @@ export function Report({ diversityData }) {
         </Route>
       </Switch>
 
-      <p className="text-gray-800 text-sm my-2 py-3">
+      <p className="py-3 my-2 text-sm text-gray-800">
         We believe that informational diversity fuels innovation, scroll down to
         discover a variety of diverse influencers to follow!
       </p>
+
+      <InfluencerRecommendations />
     </div>
   );
 }
@@ -107,4 +111,99 @@ function RaceReport({ diversityData }) {
       <HumanRaceChart races={races} data={data} />
     </div>
   );
+}
+
+function InfluencerRecommendations() {
+  const [influencers, setInfluencers] = useState([]);
+
+  async function loadRecommendations() {
+    const { json } = await cachedFetch("/api/influencer_recommendations");
+    if (!json) {
+      return;
+    }
+    const mapped = json.users.map(
+      ({ name, description, profile_image_url_https, screen_name }) => ({
+        name,
+        description,
+        imageUrl: profile_image_url_https,
+        handle: screen_name,
+        url: `https://twitter.com/${screen_name}`,
+      })
+    );
+    setInfluencers(shuffle(mapped));
+    console.log(mapped);
+  }
+  useEffect(() => {
+    loadRecommendations();
+  }, []);
+
+  return (
+    <div>
+      <span>Recommended accounts to follow</span>
+      <div className="flow-root">
+        <ul className="">
+          {influencers.map((person) => (
+            <li key={person.handle} className="px-4 py-2 my-2 rounded shadow">
+              <div className="flex items-center w-full space-x-4">
+                <div className="flex-shrink-0">
+                  <img
+                    className="w-8 h-8 rounded-full"
+                    src={person.imageUrl}
+                    alt={person.name}
+                  />
+                </div>
+                <div className="w-max">
+                  <div className="flex">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">
+                        {person.name}
+                      </p>
+                      <p className="text-sm text-gray-500 truncate">
+                        {"@" + person.handle}
+                      </p>
+                    </div>
+                    <div>
+                      <a
+                        href={person.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center shadow-sm mr-2.5 px-3.5 py-1.5 text-sm leading-5 font-medium rounded-full text-white bg-blue-400 hover:bg-blue-500"
+                      >
+                        Follow
+                      </a>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-900">
+                      {person.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function shuffle(array) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
 }
