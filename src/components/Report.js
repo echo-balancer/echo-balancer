@@ -9,6 +9,7 @@ import {
 import { cachedFetch } from "../utils/cachedFetch";
 import { HumanRaceChart } from "./HumanRaceChart";
 import { LoadingSpin } from "./LoadingSpin";
+import {ReactComponent as TwitterLogo } from "./figures/twitter-logo.svg";
 
 const tabs = [
   { name: "All", to: "" },
@@ -138,7 +139,10 @@ function InfluencerRecommendations() {
 
   return (
     <div>
-      <span>Recommended accounts to follow</span>
+      <span className="inline-flex">
+        <TwitterLogo className="mr-1 text-blue-500 fill-current" />
+        Recommended accounts to follow
+      </span>
       <div className="flow-root">
         <ul className="">
           {influencers.map((person) => (
