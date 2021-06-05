@@ -35,7 +35,7 @@ export function HumanRaceChart({ races, data }) {
 
       <div className="grid grid-cols-10">
         {figures.map((Component, index) => (
-          <div key={index}>
+          <div key={index} className="flex justify-center">
             <Component />
           </div>
         ))}

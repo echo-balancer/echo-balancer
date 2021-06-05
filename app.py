@@ -231,6 +231,18 @@ def get_follows(offset_id=None):
     return friends
 
 
+@app.route("/api/influencer_recommendations")
+def get_influencer_recommendations():
+    if not session.get("token", False):
+        return jsonify({"message": "ERROR: Unauthorized"}), 401
+
+    url = "lists/members.json"
+    params = {"count": 20, "list_id": 1230956746601975808}
+
+    resp = oauth.twitter.get(url, params=params)
+    return jsonify(resp.json())
+
+
 @app.route("/api/diversity")
 def diversity():
     if not session.get("token", False):
