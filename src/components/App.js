@@ -81,24 +81,31 @@ function App() {
 
   return (
     <Router>
-      {!isLoggedIn ? (
-        <Landing />
-      ) : (
-        <div className="mx-auto max-w-screen-sm">
-          <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-          <Switch>
-            <Route exact path="/">
-              <Redirect to="/report" />
-            </Route>
-            <PrivateRoute path="/report">
-              <Report diversityData={diversityData} />
-            </PrivateRoute>
-            <PrivateRoute path="/friends">
-              <RadarChart diversityData={diversityData} friends={friends} />
-            </PrivateRoute>
-          </Switch>
-        </div>
-      )}
+      <div
+        style={{
+          background:
+            "linear-gradient(180deg, #A5B4FC 0%, rgba(238, 242, 255, 0) 100%)",
+        }}
+      >
+        {!isLoggedIn ? (
+          <Landing />
+        ) : (
+          <div className="mx-auto bg-white shadow max-w-screen-sm">
+            <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+            <Switch>
+              <Route exact path="/">
+                <Redirect to="/report" />
+              </Route>
+              <PrivateRoute path="/report">
+                <Report diversityData={diversityData} />
+              </PrivateRoute>
+              <PrivateRoute path="/friends">
+                <RadarChart diversityData={diversityData} friends={friends} />
+              </PrivateRoute>
+            </Switch>
+          </div>
+        )}
+      </div>
     </Router>
   );
 }
@@ -248,7 +255,7 @@ function Landing() {
           top: "10.19%",
         }}
       />
-      <div className="sm:mx-auto sm:w-full sm:max-w-md z-10">
+      <div className="z-10 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <img
             className="w-auto mx-auto"
@@ -264,7 +271,7 @@ function Landing() {
           <img className="py-4 mx-auto" src={quote} alt="quote" />
 
           <p
-            className="mx-auto text-center text-sm leading-4 font-medium"
+            className="mx-auto text-sm font-medium text-center leading-4"
             style={{ maxWidth: "300px" }}
           >
             We need diversity if we are to change, grow, and innovate”
@@ -288,7 +295,7 @@ function Landing() {
             <a href={`${HOST}/auth/login`}>
               <LoginButton className="mx-auto" />
             </a>
-            <p className="mt-2 px-4 text-sm text-gray-500">
+            <p className="px-4 mt-2 text-sm text-gray-500">
               Disclaimer: Your private data are safe with us as we do not store
               any of your data as soon as you close this page.
             </p>
