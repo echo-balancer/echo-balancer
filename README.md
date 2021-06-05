@@ -1,5 +1,10 @@
-# Echo Chamber Meter
+# Echo Balancer
 
+## #HackForChange
+
+https://www.techforaapi.org/hackforchange
+
+## Development
 ```sh
 curl https://get.volta.sh | bash
 
