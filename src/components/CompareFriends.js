@@ -117,7 +117,7 @@ export function CompareFriends({
         </Dialog>
       </Transition.Root>
 
-      <div className="flex py-4">
+      <div className="flex mt-4">
         <button
           type="button"
           className="inline-flex px-4 py-2 mx-auto w-medium justify-center text-sm font-medium text-white bg-indigo-600 border border-transparent w-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -127,7 +127,7 @@ export function CompareFriends({
         </button>
       </div>
 
-      <p className="mt-1 sm:mx-auto px-6 text-xs text-gray-500">
+      <p className="sm:mx-auto py-4 px-6 text-xs text-gray-500">
         *The low-medium-high is determined based on the percentage of each race
         within your Twitter following, 5% or below is deemed as low and anything
         above 20% is deemed as high.
