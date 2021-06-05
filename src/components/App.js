@@ -81,12 +81,7 @@ function App() {
 
   return (
     <Router>
-      <div
-        style={{
-          background:
-            "linear-gradient(180deg, #A5B4FC 0%, rgba(238, 242, 255, 0) 100%)",
-        }}
-      >
+      <div className="bg-gradient-to-b from-indigo-300 to-white">
         {!isLoggedIn ? (
           <Landing />
         ) : (
@@ -239,13 +234,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
 
 function Landing() {
   return (
-    <div
-      className="flex flex-col justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8"
-      style={{
-        background:
-          "linear-gradient(180deg, #A5B4FC 0%, rgba(238, 242, 255, 0) 100%)",
-      }}
-    >
+    <div className="flex flex-col justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8 bg-gradient-to-b from-indigo-300 to-white">
       <img
         src={shape}
         alt="shape"
