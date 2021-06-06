@@ -62,12 +62,15 @@ function RadarChart({ diversityData, friends }) {
         ticks: {
           stepSize: 1,
           showLabelBackdrop: false,
-          color: "rgba(156, 163, 175, 0.75)",
-          z: 5,
+          color: "rgba(100,100,100)",
+          z: 10,
+          font: {
+            size: 16
+          },
           callback: function (value, index, values) {
             switch (value) {
               case 4:
-                return ">=20%";
+                return "≥20%";
               case 3:
                 return "15%";
               case 2:
