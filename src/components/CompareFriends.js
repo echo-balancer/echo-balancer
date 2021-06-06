@@ -128,9 +128,8 @@ export function CompareFriends({
       </div>
 
       <p className="sm:mx-auto py-4 px-6 text-xs text-gray-500">
-        *The low-medium-high is determined based on the percentage of each race
-        within your Twitter following, 5% or below is deemed as low and anything
-        above 20% is deemed as high.
+        * According to United States Census data up to date: White: 60%, Black: 13.4%, Asian: 6%, Latino: 18.5%, Other: 2.1% (
+        <a href="https://www.census.gov/quickfacts/fact/table/US/PST045219"style={{textDecoration: "underline"}}>Soucre link</a>)
       </p>
     </>
   );
