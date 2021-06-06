@@ -61,7 +61,7 @@ export function CompareFriends({
           open={open}
           onClose={() => {}}
         >
-          <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+          <div className="flex justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
