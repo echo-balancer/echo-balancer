@@ -177,7 +177,7 @@ function InfluencerRecommendations() {
                     </div>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-900 overflow-ellipsis">
+                    <p className="text-sm text-gray-900 break-all overflow-ellipsis">
                       {person.description}
                     </p>
                   </div>
