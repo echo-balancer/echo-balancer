@@ -33,7 +33,21 @@ function RadarChart({ diversityData, friends }) {
     pointStyle: "circle",
   };
 
-  const [dataSet, setDataset] = useState([myData]);
+  const nationalData = {
+    label: "National racial proportions*",
+    data: [13.4, 76.3, 18.5, 6.0, 4.1].map(normalize),
+    fill: true,
+    backgroundColor: "rgba(209,209,209,0.2)",
+    borderColor: "rgba(209,209,209,0.5)",
+    pointBackgroundColor: "rgba(209,209,209)",
+    pointBorderColor: "#fff",
+    pointHoverBackgroundColor: "#fff",
+    pointHoverBorderColor: "rgba(209,209,209)",
+    pointStyle: "circle",
+  };
+
+
+  const [dataSet, setDataset] = useState([myData, nationalData]);
 
   const data = {
     labels: ["Black", "White", "Latino", "Other", "AAPI"],
@@ -53,11 +67,11 @@ function RadarChart({ diversityData, friends }) {
           callback: function (value, index, values) {
             switch (value) {
               case 4:
-                return "High";
+                return ">=20%";
               case 3:
-                return "Medium";
+                return "15%";
               case 2:
-                return "Low";
+                return "10%";
               default:
                 return "";
             }
@@ -87,7 +101,7 @@ function RadarChart({ diversityData, friends }) {
 
   useEffect(() => {
     if (friendDiversityData) {
-      setDataset([myData, compareData]);
+      setDataset([myData, compareData, nationalData]);
     }
   }, [friendLabel, friendDiversityData]);
 
