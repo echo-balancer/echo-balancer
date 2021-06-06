@@ -42,8 +42,8 @@ export function CompareFriends({
     if (e.target.value) {
       var l = friends.filter(
         (friend) =>
-          friend.name.toLowerCase().includes(e.target.value) ||
-          friend.screen_name.toLowerCase().includes(e.target.value)
+          friend.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
+          friend.screen_name.toLowerCase().includes(e.target.value.toLowerCase())
       );
       setFilteredList(l);
     } else {
