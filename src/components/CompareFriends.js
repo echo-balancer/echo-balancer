@@ -118,7 +118,7 @@ export function CompareFriends({
                     <div className="flex items-center -mt-2 -ml-4 sm:flex-nowrap">
                       <button
                         type="button"
-                        className="mr-auto font-medium text-gray-600 rounded-md shadow-sm text-ml hover:text-gray-700 focus:outline-none"
+                        className="mr-auto font-medium text-gray-600 rounded-md text-ml hover:text-gray-700 focus:outline-none"
                         onClick={() => setOpen(false)}
                       >
                         Cancel
@@ -132,7 +132,7 @@ export function CompareFriends({
 
                       <button
                         type="submit"
-                        className="inline-flex ml-auto font-medium text-indigo-600 shadow-sm text-ml rounded-md hover:text-indigo-700 focus:outline-none"
+                        className="inline-flex ml-auto font-medium text-indigo-600 text-ml rounded-md hover:text-indigo-700 focus:outline-none"
                         onClick={handleConfirm}
                       >
                         Save
