@@ -62,7 +62,7 @@ function App() {
       if (isLoggedIn) {
         const { status, json: data } = await cachedFetch(`/api/friends`);
         if (status === 200) {
-          setFriends(data["users"] || []);
+          setFriends(data || []);
         } else {
           if (data.message) {
             alert(data.message);
