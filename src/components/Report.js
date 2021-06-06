@@ -30,12 +30,9 @@ export function Report({ diversityData }) {
   return diversityData === null ? (
     <LoadingSpin />
   ) : (
-    <div className="mx-8 mt-2">
-      <h2 id="diversity-report-navigation" className="font-bold text-gray-800">
-        Your influencer's diversity report
-      </h2>
+    <div className="pt-3 mx-8" id="diversity-report-navigation">
       <nav
-        className="relative z-0 flex my-2 space-x-1"
+        className="relative z-0 flex my-1 space-x-1"
         aria-labelledby="diversity-report-navigation"
         aria-label="Divesity report tabs"
       >
@@ -48,7 +45,7 @@ export function Report({ diversityData }) {
             className={classNames(
               "text-gray-500",
               "bg-gray-100",
-              "group relative min-w-0 flex-1 overflow-hidden rounded-full py-1 px-1 text-xs text-center focus:z-10"
+              "group relative min-w-0 flex-1 overflow-hidden rounded-full py-2 px-1 text-xs text-center focus:z-10"
             )}
             aria-current="page"
           >
