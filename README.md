@@ -2,7 +2,8 @@
 
 ## #HackForChange
 
-https://www.techforaapi.org/hackforchange
+- Project intro video: https://youtu.be/duXtvIGEOio
+- About the hackathon: https://www.techforaapi.org/hackforchange
 
 ## Development
 ```sh
